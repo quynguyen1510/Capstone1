@@ -1,17 +1,19 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CategoryRecycleAdapter extends RecyclerView.Adapter<CategoryRecycleAdapter.viewHolder> {
+public class CategoryRecycleAdapter extends RecyclerView.Adapter<CategoryRecycleAdapter.viewHolder>{
     ArrayList<Category> arrayList;
     Context context;
 
@@ -32,6 +34,17 @@ public class CategoryRecycleAdapter extends RecyclerView.Adapter<CategoryRecycle
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         holder.txtCatNameRecycle.setText(arrayList.get(position).getCatName());
         holder.imgviewCatImg.setImageResource(arrayList.get(position).getCatImage());
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position, boolean isLongClick) {
+               if(arrayList.get(position).getCatName().equals("Đồ uống")){
+                   if(isLongClick == false){
+                       Intent intent = new Intent(context,DrinkProductActivity.class);
+                       context.startActivity(intent);
+                   }
+               }
+            }
+        });
     }
 
     @Override
@@ -39,15 +52,34 @@ public class CategoryRecycleAdapter extends RecyclerView.Adapter<CategoryRecycle
         return arrayList.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder{
+    public class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
 
         TextView txtCatNameRecycle;
         ImageView imgviewCatImg;
+        private ItemClickListener itemClickListener;
 
         public viewHolder(View itemView) {
             super(itemView);
             txtCatNameRecycle = (TextView) itemView.findViewById(R.id.txtCatNameRecycle);
             imgviewCatImg = (ImageView) itemView.findViewById(R.id.imgviewCatImg);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        public void setItemClickListener(ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemClickListener.onClick(v,getAdapterPosition(),false);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            itemClickListener.onClick(v,getAdapterPosition(),true);
+            return true;
         }
     }
 }
