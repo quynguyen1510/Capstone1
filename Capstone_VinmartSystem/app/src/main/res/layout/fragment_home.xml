@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#59c5bebe"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/toolbarID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/toolbar_main"></include>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/toolbarID"
+        android:id="@+id/silde"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true">
+
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="300dp"
+            android:layout_height="140dp"
+            android:layout_marginLeft="35dp"></ViewFlipper>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/silde"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        >
+
+        <GridView
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="15dp"
+            android:numColumns="2"
+            android:columnWidth="50dp"
+            android:id="@+id/gridviewCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+</RelativeLayout>

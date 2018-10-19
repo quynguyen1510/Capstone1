@@ -1,0 +1,49 @@
+<Toolbar android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:background="#ff1122"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/btnBackMain"
+        android:background="@drawable/ic_left_arrow"
+        android:layout_width="17dp"
+        android:layout_marginLeft="12dp"
+        android:layout_height="17dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/vinmart_logo"/>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="10.7dp"
+        android:orientation="horizontal"
+        android:background="@drawable/row_conner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edtSearchSubNav"
+            android:textColor="#2b2b2b"
+            android:textColorHint="#2b2b2b"
+            android:background="#00000000"
+            android:hint="Tìm kiếm sản phẩm ..."
+            android:layout_marginLeft="20dp"
+            android:textSize="11.7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnSearchSubNav"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="12.8dp"
+            android:background="@drawable/search" />
+    </LinearLayout>
+</Toolbar>

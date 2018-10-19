@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/background_custom"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/logo_login" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameWrapper"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp"
+        android:hint="Full Name"
+        android:textColorHint="#ffffff"
+        app:hintEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edtFullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3ef40819"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textColor="#ffff" />
+
+    </android.support.design.widget.TextInputLayout>
+
+   <android.support.design.widget.TextInputLayout
+       android:id="@+id/usernameWrapper1"
+       android:hint="Email"
+       android:layout_centerHorizontal="true"
+       android:textColorHint="#ffffff"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/usernameWrapper"
+       android:layout_width="300dp">
+
+       <android.support.design.widget.TextInputEditText
+           android:id="@+id/edtEmail"
+           android:textColor="#ffff"
+           android:padding="10dp"
+           android:background="#3ef40819"
+           android:inputType="textEmailAddress"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+   </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameWrapper2"
+        android:hint="Username"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#ffffff"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameWrapper1"
+        android:layout_width="300dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edtUser"
+            app:passwordToggleEnabled="true"
+            android:textColor="#ffff"
+            android:padding="10dp"
+            android:background="#3ef40819"
+            android:inputType="textPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameWrapper3"
+        android:hint="Password"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#ffffff"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameWrapper2"
+        app:passwordToggleEnabled="true"
+        android:layout_width="300dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edtPassword"
+            app:passwordToggleEnabled="true"
+            android:textColor="#ffff"
+            android:padding="10dp"
+            android:background="#3ef40819"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameWrapper4"
+        android:hint="RePassword"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#ffffff"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameWrapper3"
+        app:passwordToggleEnabled="true"
+        android:layout_width="300dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edtRePassword"
+            app:passwordToggleEnabled="true"
+            android:textColor="#ffff"
+            android:padding="10dp"
+            android:background="#3ef40819"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:hint="Phonenumber"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#ffffff"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameWrapper4"
+        android:layout_width="300dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:maxLength="11"
+            android:id="@+id/edtPhone"
+            app:passwordToggleEnabled="true"
+            android:textColor="#ffff"
+            android:padding="10dp"
+            android:background="#3ef40819"
+            android:inputType="textPhonetic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnCreateAcc"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="59dp"
+        android:background="@drawable/login_custom"
+        android:text="Create Account"
+        android:textColor="#ffff" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:textColor="#ffff"
+        android:text="Cancel"
+        android:background="@drawable/login_custom"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
