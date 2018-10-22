@@ -12,11 +12,12 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:scaleType="fitXY"
         android:src="@drawable/cafe"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:id="@+id/imgviewCatImg"
-        android:layout_width="170dp"
+        android:layout_width="150dp"
         android:layout_height="100dp" />
 
     <TextView

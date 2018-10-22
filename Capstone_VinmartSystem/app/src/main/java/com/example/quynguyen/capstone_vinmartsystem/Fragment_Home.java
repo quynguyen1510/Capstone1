@@ -1,5 +1,6 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class Fragment_Home extends Fragment {
 
-    Button btnSearch;
+    Button btnSearch, btnNotification;
     EditText edtSearch;
     ViewFlipper viewFlipper;
     ArrayList<NewsPromotion> arrNews;
@@ -28,10 +29,18 @@ public class Fragment_Home extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home,container,false);
+        final View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         RecyclerView recyclerViewCat = (RecyclerView) view.findViewById(R.id.recyclerView);
         RecyclerView recyclerViewNew = (RecyclerView) view.findViewById(R.id.recyclerViewNews);
+        btnNotification = (Button) view.findViewById(R.id.btnNotification);
+        btnNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(getActivity(),NotificationActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
 
         recyclerViewCat.setHasFixedSize(true);
 
@@ -41,9 +50,9 @@ public class Fragment_Home extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerViewNew.setLayoutManager(layoutManager);
         for (int i = 0 ; i<5 ; i++) {
-            arrNews.add(new NewsPromotion(R.drawable.news1, "Deal giảm giá sốc mỗi tuần mang lại giá trị tốt nhất"));
-            arrNews.add(new NewsPromotion(R.drawable.news2, "Giảm giá cuối năm với nhiều ưu đãi tốt nhất"));
-            arrNews.add(new NewsPromotion(R.drawable.news3, "VinID sở hữu thẻ đa dụng với nhiều ưu đãi hấp dẫn "));
+            arrNews.add(new NewsPromotion(R.drawable.news1, "Deal giảm giá sốc mỗi tuần mang lại giá trị tốt nhất" ,"Giảm giá cực sốc mỗi tuần với hàng ngàn cơ hội trúng thưởng từ nay đến cuối năm , Vinmart tung ra chương trình giải thưởng thường niên đến mọi nhà"));
+            arrNews.add(new NewsPromotion(R.drawable.news2, "Giảm giá cuối năm với nhiều ưu đãi tốt nhất","Giảm giá cực sốc mỗi tuần với hàng ngàn cơ hội trúng thưởng từ nay đến cuối năm , Vinmart tung ra chương trình giải thưởng thường niên đến mọi nhà"));
+            arrNews.add(new NewsPromotion(R.drawable.news3, "VinID sở hữu thẻ đa dụng với nhiều ưu đãi hấp dẫn ","Giảm giá cực sốc mỗi tuần với hàng ngàn cơ hội trúng thưởng từ nay đến cuối năm , Vinmart tung ra chương trình giải thưởng thường niên đến mọi nhà"));
         }
         newsPromotionRecycleAdapter =  new NewsPromotionRecycleAdapter(arrNews,getContext());
         recyclerViewNew.setAdapter(newsPromotionRecycleAdapter);

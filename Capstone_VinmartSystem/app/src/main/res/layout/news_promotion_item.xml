@@ -11,6 +11,7 @@
     android:layout_width="190dp"
     android:layout_height="200dp">
     <ImageView
+        android:scaleType="fitXY"
         android:id="@+id/imgNewsImg"
         android:src="@drawable/news1"
         android:layout_width="wrap_content"
