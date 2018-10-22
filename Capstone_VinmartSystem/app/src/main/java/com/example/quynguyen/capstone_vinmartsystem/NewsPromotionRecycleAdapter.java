@@ -40,15 +40,32 @@ public class NewsPromotionRecycleAdapter extends  RecyclerView.Adapter<NewsPromo
         return arrayList.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder{
+    public class viewHolder extends RecyclerView.ViewHolder implements  View.OnLongClickListener , View.OnClickListener{
 
         TextView txtDescription;
         ImageView imgNewsImg;
+        private ItemClickListener itemClickListener;
 
         public viewHolder(View itemView) {
             super(itemView);
             imgNewsImg = (ImageView) itemView.findViewById(R.id.imgNewsImg);
             txtDescription = (TextView) itemView.findViewById(R.id.txtDescription);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+        public void setItemClickListener(ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemClickListener.onClick(v,getAdapterPosition(),false);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            itemClickListener.onClick(v,getAdapterPosition(),true);
+            return true;
         }
     }
 }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.CardView
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="8dp"
+    android:layout_height="wrap_content"
+    android:layout_width="190dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="190dp"
-    android:background="@drawable/news_conner"
-    android:layout_marginTop="20dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
     android:layout_height="200dp">
-
     <ImageView
         android:id="@+id/imgNewsImg"
         android:src="@drawable/news1"
@@ -25,3 +26,4 @@
         android:text="Thông báo về chính sách thay đổi sim từ 11 số thành 10 số" />
 
 </LinearLayout>
+</android.support.v7.widget.CardView>
