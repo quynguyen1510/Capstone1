@@ -8,17 +8,10 @@
     android:orientation="horizontal"
     android:background="#ff1122">
 
-    <Button
-        android:id="@+id/btnNavigation"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:layout_marginLeft="12dp"
-        android:background="@drawable/nevigaiton"/>
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="25dp"
         android:src="@drawable/vinlogo"/>
     <LinearLayout
         android:padding="10dp"
@@ -26,7 +19,7 @@
         android:background="@drawable/row_conner"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp">
+        android:layout_marginLeft="15dp">
 
         <EditText
             android:id="@+id/edtSearch"

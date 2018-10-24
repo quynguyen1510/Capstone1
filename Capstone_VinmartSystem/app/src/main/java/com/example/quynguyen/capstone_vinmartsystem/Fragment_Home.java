@@ -15,7 +15,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -23,13 +33,22 @@ public class Fragment_Home extends Fragment {
 
     Button btnSearch, btnNotification;
     EditText edtSearch;
-    ViewFlipper viewFlipper;
     ArrayList<NewsPromotion> arrNews;
     NewsPromotionRecycleAdapter newsPromotionRecycleAdapter;
+    ArrayList<Category> arrCat;
+
+    User user;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home,container,false);
+
+        edtSearch = (EditText) view.findViewById(R.id.edtSearch);
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            User user = bundle.getParcelable("Acc");
+            Toast.makeText(getContext(),user.getFullName().toString(),Toast.LENGTH_LONG).show();
+        }
 
         RecyclerView recyclerViewCat = (RecyclerView) view.findViewById(R.id.recyclerView);
         RecyclerView recyclerViewNew = (RecyclerView) view.findViewById(R.id.recyclerViewNews);
@@ -41,8 +60,9 @@ public class Fragment_Home extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
-
         recyclerViewCat.setHasFixedSize(true);
+        //Json
+//        ReadJSON("http://10.80.124.213/demo_webservice.php");
 
           //news recycleview
         arrNews = new ArrayList<>();
@@ -58,12 +78,12 @@ public class Fragment_Home extends Fragment {
         recyclerViewNew.setAdapter(newsPromotionRecycleAdapter);
 
         //cat recycleview
-        final ArrayList<Category> arrCat = new ArrayList<>();
-        arrCat.add(new Category(R.drawable.vineco, "VinEco"));
-        arrCat.add(new Category(R.drawable.nhu_yeu_pham, "Nhu yếu phẩm"));
-        arrCat.add(new Category(R.drawable.thuc_uong, "Đồ uống"));
-        arrCat.add(new Category(R.drawable.vincook, "VinCook"));
-        arrCat.add(new Category(R.drawable.dich_vu, "Dịch vụ"));
+        arrCat = new ArrayList<>();
+        arrCat.add(new Category(1,R.drawable.vineco, "VinEco"));
+        arrCat.add(new Category(2,R.drawable.nhu_yeu_pham, "Nhu yếu phẩm"));
+        arrCat.add(new Category(3,R.drawable.thuc_uong, "Đồ uống"));
+        arrCat.add(new Category(4,R.drawable.vincook, "VinCook"));
+        arrCat.add(new Category(5,R.drawable.dich_vu, "Dịch vụ"));
         int spanCount = 2;//Số cột nếu thiết lập lưới đứng, số dòng nếu lưới ngang
         int orientation = GridLayoutManager.VERTICAL;//Lưới ngang
 
@@ -76,4 +96,32 @@ public class Fragment_Home extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            User user = bundle.getParcelable("Account");
+            Toast.makeText(getContext(),user.getFullName().toString(),Toast.LENGTH_LONG).show();
+        }
+    }
+    //Read Json
+    private void ReadJSON(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(),error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
+    }
 }

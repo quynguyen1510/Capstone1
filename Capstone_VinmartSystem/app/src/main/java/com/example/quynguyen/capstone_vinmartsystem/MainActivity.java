@@ -20,25 +20,38 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     EditText edtSearch;
-    ViewFlipper viewFlipper;
-    Fragment_Cart fragment_cart = new Fragment_Cart();
+    Fragment_Cart fragment_cart;
+    Fragment_Home fragment_home;
+    Fragment_Profile fragment_profile;
+    Fragment_Detail_Profile fragment_detail_profile;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
         if(bundle != null){
-            Product objProduct = bundle.getParcelable("CARTPRODUCT");
-            bundle.putParcelable("CART",objProduct);
-            fragment_cart.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment_cart).commit();
-        }else {
+            User objUser = bundle.getParcelable("Account");
+            bundle.putParcelable("User",objUser);
+            fragment_detail_profile = new Fragment_Detail_Profile();
+            fragment_detail_profile.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_detail_profile).commit();
+        }else{
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_Home()).commit();
         }
+
+//        if(bundle != null){
+//            Product objProduct = bundle.getParcelable("CARTPRODUCT");
+//            bundle.putParcelable("CART", objProduct);
+//            fragment_cart = new Fragment_Cart();
+//            fragment_cart.setArguments(bundle);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_cart).commit();
+//        }else{
+//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_Home()).commit();
+//        }
         bottomNavigationView.setOnNavigationItemSelectedListener(navLister);
 
     }
@@ -55,10 +68,14 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new Fragment_Cart();
                             break;
                         case R.id.nav_profile:
-                            selectedFragment = new Fragment_Profile();
+                            if(bundle != null) {
+                                selectedFragment = new Fragment_Detail_Profile();
+                            }else{
+                                selectedFragment = new Fragment_Profile();
+                            }
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                     return  true;
                 }
             };

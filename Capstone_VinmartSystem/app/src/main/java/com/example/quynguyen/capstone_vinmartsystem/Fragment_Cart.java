@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,10 +34,10 @@ public class Fragment_Cart extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if( bundle != null){
-            Product product = bundle.getParcelable("CART");
-            arrProduct.add(product);
+            objProduct = bundle.getParcelable("CARTPRODUCT");
+            arrProduct.add(objProduct);
         }
         arrProduct.add(new Product(R.drawable.slurpee,"Slurpee","Thức uống có ga",20000,"15/10/2018"));
         cartAdapter = new CartRecycleAdapter(arrProduct,getContext());

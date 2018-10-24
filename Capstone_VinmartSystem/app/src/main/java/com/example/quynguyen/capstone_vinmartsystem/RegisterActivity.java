@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 public class RegisterActivity extends AppCompatActivity {
     Button btnCreateAcc, btnCancel;
-    EditText edtFullname, edtUser , edtEmail, edtPassword;
+    EditText edtFullname, edtUser , edtEmail, edtPassword,edtPhoneNumber;
+    User user ;
+    Fragment_Profile fragment_profile = new Fragment_Profile();
 
 
     @Override
@@ -21,6 +23,9 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         edtUser = (EditText) findViewById(R.id.edtUser);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
+        edtFullname = (EditText) findViewById(R.id.edtFullname);
+        edtEmail = (EditText) findViewById(R.id.edtEmail);
+        edtPhoneNumber = (EditText) findViewById(R.id.edtPhone);
         btnCreateAcc = (Button) findViewById(R.id.btnCreateAcc);
         btnCancel = (Button) findViewById(R.id.btnCancel);
 
@@ -36,8 +41,11 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("User",edtUser.getText().toString());
-                intent.putExtra("Pass",edtPassword.getText().toString());
+                Bundle bundle = new Bundle();
+                user = new User(edtFullname.getText().toString(),edtEmail.getText().toString(),edtUser.getText().toString(),edtPassword.getText().toString(),edtPhoneNumber.getText().toString());
+                bundle.putParcelable("Account",user);
+                fragment_profile.setArguments(bundle);
+                intent.putExtras(bundle);
                 setResult(RESULT_OK,intent);
                 finish();
             }
