@@ -1,6 +1,8 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +33,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationAdapter.viewHolder holder, int position) {
         holder.txtNotiTitle.setText(arrayList.get(position).getDescription());
         holder.txtNotiDescription.setText(arrayList.get(position).getDetail());
+        final   Bundle bundle = new Bundle();
+        final    Intent intent = new Intent(context,NewsPromotionDetailActivity.class);
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position, boolean isLongClick) {
+                bundle.putParcelable("News",arrayList.get(position));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
