@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_home:
                             selectedFragment = new Fragment_Home();
                             break;
+                        case R.id.nav_delivery:
+                            selectedFragment = new Fragment_Delivery();
+                            break;
                         case R.id.nav_cart:
                             selectedFragment = new Fragment_Cart();
                             break;

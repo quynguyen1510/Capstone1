@@ -7,6 +7,12 @@
     </item>
 
     <item
+        android:id="@+id/nav_delivery"
+        android:title="Delivery"
+        android:icon="@drawable/icon_delivery">
+    </item>
+
+    <item
         android:id="@+id/nav_profile"
         android:title="Profile"
         android:icon="@drawable/ic_person_white_24dp">
