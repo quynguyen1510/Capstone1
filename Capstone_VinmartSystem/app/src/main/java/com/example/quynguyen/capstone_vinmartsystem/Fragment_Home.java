@@ -26,6 +26,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,7 +37,9 @@ public class Fragment_Home extends Fragment {
     EditText edtSearch;
     ArrayList<NewsPromotion> arrNews;
     NewsPromotionRecycleAdapter newsPromotionRecycleAdapter;
+    CategoryRecycleAdapter categoryRecycleAdapter;
     ArrayList<Category> arrCat;
+    String urlGetData = "http://192.168.1.41:8080/androidwebservice/getdata.php";
 
     User user;
     @Nullable
@@ -62,7 +66,7 @@ public class Fragment_Home extends Fragment {
         });
         recyclerViewCat.setHasFixedSize(true);
         //Json
-//        ReadJSON("http://10.80.124.213/demo_webservice.php");
+        ReadJSON(urlGetData);
 
           //news recycleview
         arrNews = new ArrayList<>();
@@ -79,18 +83,18 @@ public class Fragment_Home extends Fragment {
 
         //cat recycleview
         arrCat = new ArrayList<>();
-        arrCat.add(new Category(1,R.drawable.vineco, "VinEco"));
-        arrCat.add(new Category(2,R.drawable.nhu_yeu_pham, "Nhu yếu phẩm"));
-        arrCat.add(new Category(3,R.drawable.thuc_uong, "Đồ uống"));
-        arrCat.add(new Category(4,R.drawable.vincook, "VinCook"));
-        arrCat.add(new Category(5,R.drawable.dich_vu, "Dịch vụ"));
+//        arrCat.add(new Category(1,R.drawable.vineco, "VinEco"));
+//        arrCat.add(new Category(2,R.drawable.nhu_yeu_pham, "Nhu yếu phẩm"));
+//        arrCat.add(new Category(3,R.drawable.thuc_uong, "Đồ uống"));
+//        arrCat.add(new Category(4,R.drawable.vincook, "VinCook"));
+//        arrCat.add(new Category(5,R.drawable.dich_vu, "Dịch vụ"));
         int spanCount = 2;//Số cột nếu thiết lập lưới đứng, số dòng nếu lưới ngang
         int orientation = GridLayoutManager.VERTICAL;//Lưới ngang
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         recyclerViewCat.setLayoutManager(gridLayoutManager);
-        CategoryRecycleAdapter categoryRecycleAdapter = new CategoryRecycleAdapter(arrCat,getContext());
+        categoryRecycleAdapter = new CategoryRecycleAdapter(arrCat,getContext());
         recyclerViewCat.setAdapter(categoryRecycleAdapter);
 
         return view;
@@ -111,8 +115,21 @@ public class Fragment_Home extends Fragment {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
 
+                for(int i = 0 ; i < response.length(); i++){
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        arrCat.add(new Category(
+                                jsonObject.getInt("ID"),
+                                R.drawable.vineco,
+                                jsonObject.getString("Name"),
+                                jsonObject.getInt("IDParent")
+                        ));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                categoryRecycleAdapter.notifyDataSetChanged();
             }
         },
                 new Response.ErrorListener() {
