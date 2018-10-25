@@ -11,11 +11,11 @@
         android:layout_width="match_parent"
         android:theme="@style/AppTheme"
         android:fitsSystemWindows="true"
-        android:layout_height="300dp">
+        android:layout_height="350dp">
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:layout_height="300dp">
+            android:layout_height="340dp">
             <include layout="@layout/toolbar_main"></include>
 
             <android.support.v7.widget.RecyclerView

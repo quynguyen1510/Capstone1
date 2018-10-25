@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Fragment_Home extends Fragment {
 
@@ -39,7 +40,8 @@ public class Fragment_Home extends Fragment {
     NewsPromotionRecycleAdapter newsPromotionRecycleAdapter;
     CategoryRecycleAdapter categoryRecycleAdapter;
     ArrayList<Category> arrCat;
-    String urlGetData = "http://192.168.1.41:8080/androidwebservice/getdata.php";
+    String urlGetCategory = "http://192.168.1.41:8080/androidwebservice/getcategory.php";
+    String urlGetNews = "http://192.168.1.41:8080/androidwebservice/getnews.php";
 
     User user;
     @Nullable
@@ -65,34 +67,26 @@ public class Fragment_Home extends Fragment {
             }
         });
         recyclerViewCat.setHasFixedSize(true);
-        //Json
-        ReadJSON(urlGetData);
 
-          //news recycleview
+
+        //news recycleview
         arrNews = new ArrayList<>();
         recyclerViewNew.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         recyclerViewNew.setLayoutManager(layoutManager);
-        for (int i = 0 ; i<5 ; i++) {
-            arrNews.add(new NewsPromotion(R.drawable.news1, "Deal giảm giá sốc mỗi tuần mang lại giá trị tốt nhất" ,"Giảm giá cực sốc mỗi tuần với hàng ngàn cơ hội trúng thưởng từ nay đến cuối năm , Vinmart tung ra chương trình giải thưởng thường niên đến mọi nhà"));
-            arrNews.add(new NewsPromotion(R.drawable.news2, "Giảm giá cuối năm với nhiều ưu đãi tốt nhất","Giảm giá cực sốc mỗi tuần với hàng ngàn cơ hội trúng thưởng từ nay đến cuối năm , Vinmart tung ra chương trình giải thưởng thường niên đến mọi nhà"));
-            arrNews.add(new NewsPromotion(R.drawable.news3, "VinID sở hữu thẻ đa dụng với nhiều ưu đãi hấp dẫn ","Giảm giá cực sốc mỗi tuần với hàng ngàn cơ hội trúng thưởng từ nay đến cuối năm , Vinmart tung ra chương trình giải thưởng thường niên đến mọi nhà"));
-        }
+        ReadJSON(urlGetNews);
         newsPromotionRecycleAdapter =  new NewsPromotionRecycleAdapter(arrNews,getContext());
         recyclerViewNew.setAdapter(newsPromotionRecycleAdapter);
 
         //cat recycleview
+        //Json
+        ReadJSON(urlGetCategory);
         arrCat = new ArrayList<>();
-//        arrCat.add(new Category(1,R.drawable.vineco, "VinEco"));
-//        arrCat.add(new Category(2,R.drawable.nhu_yeu_pham, "Nhu yếu phẩm"));
-//        arrCat.add(new Category(3,R.drawable.thuc_uong, "Đồ uống"));
-//        arrCat.add(new Category(4,R.drawable.vincook, "VinCook"));
-//        arrCat.add(new Category(5,R.drawable.dich_vu, "Dịch vụ"));
         int spanCount = 2;//Số cột nếu thiết lập lưới đứng, số dòng nếu lưới ngang
-        int orientation = GridLayoutManager.VERTICAL;//Lưới ngang
+        int orientation = GridLayoutManager.VERTICAL;//Lưới đứng
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), spanCount);
+        gridLayoutManager.setOrientation(orientation);
         recyclerViewCat.setLayoutManager(gridLayoutManager);
         categoryRecycleAdapter = new CategoryRecycleAdapter(arrCat,getContext());
         recyclerViewCat.setAdapter(categoryRecycleAdapter);
@@ -110,35 +104,69 @@ public class Fragment_Home extends Fragment {
         }
     }
     //Read Json
-    private void ReadJSON(String url){
+    private void ReadJSON(final String urlData){
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-                for(int i = 0 ; i < response.length(); i++){
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(i);
-                        arrCat.add(new Category(
-                                jsonObject.getInt("ID"),
-                                R.drawable.vineco,
-                                jsonObject.getString("Name"),
-                                jsonObject.getInt("IDParent")
-                        ));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+        String [ ] arrString = urlData.split("/");
+        if(arrString[arrString.length-1].equals("getcategory.php")){
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlData, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    for(int i = 0 ; i < response.length(); i++){
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            int image = getResources().getIdentifier(jsonObject.getString("Image"),"drawable",getActivity().getPackageName());
+                            arrCat.add(new Category(
+                                    jsonObject.getInt("ID"),
+                                    image,
+                                    jsonObject.getString("Name"),
+                                    jsonObject.getInt("IDParent")
+                            ));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    categoryRecycleAdapter.notifyDataSetChanged();
                 }
-                categoryRecycleAdapter.notifyDataSetChanged();
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),error.toString(),Toast.LENGTH_LONG).show();
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getContext(),error.toString(),Toast.LENGTH_LONG).show();
+                        }
                     }
+            );
+            requestQueue.add(jsonArrayRequest);
+        }else if(arrString[arrString.length-1].equals("getnews.php")){
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlData, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    for(int i = 0 ; i < response.length(); i++){
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            int image = getResources().getIdentifier(jsonObject.getString("Image"),"drawable",getActivity().getPackageName());
+                            arrNews.add(new NewsPromotion(
+                                    jsonObject.getInt("ID"),
+                                    jsonObject.getString("Name"),
+                                    image,
+                                    jsonObject.getString("Description"),
+                                    jsonObject.getString("Detail"),
+                                    jsonObject.getString("NewsDate")
+                            ));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    newsPromotionRecycleAdapter.notifyDataSetChanged();
                 }
-        );
-        requestQueue.add(jsonArrayRequest);
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getContext(),error.toString(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
+            requestQueue.add(jsonArrayRequest);
+        }
     }
 }

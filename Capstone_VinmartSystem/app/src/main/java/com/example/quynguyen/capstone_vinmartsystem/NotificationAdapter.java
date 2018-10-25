@@ -31,8 +31,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationAdapter.viewHolder holder, int position) {
-        holder.txtNotiTitle.setText(arrayList.get(position).getDescription());
-        holder.txtNotiDescription.setText(arrayList.get(position).getDetail());
+        holder.txtNotiTitle.setText(arrayList.get(position).getNewsName());
+        holder.txtNotiDescription.setText(arrayList.get(position).getNewsDescription());
         final   Bundle bundle = new Bundle();
         final    Intent intent = new Intent(context,NewsPromotionDetailActivity.class);
         holder.setItemClickListener(new ItemClickListener() {

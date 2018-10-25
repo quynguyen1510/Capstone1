@@ -9,6 +9,23 @@ public class User implements Parcelable {
     private String userName;
     private String passWord;
     private String phoneNumber;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public User(String fullName, String email, String userName, String passWord, String phoneNumber, String address) {
+        this.fullName = fullName;
+        this.email = email;
+        this.userName = userName;
+        this.passWord = passWord;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
 
     public User(String fullName, String email, String userName, String passWord, String phoneNumber) {
         this.fullName = fullName;
