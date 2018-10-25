@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NewsPromotionDetailActivity extends AppCompatActivity {
-    TextView txtDescriptionNews, txtDetailNews;
+    TextView txtNewsName, txtNewsDetail;
     ImageView imgNews;
     Button btnGoStore;
 
@@ -19,18 +19,18 @@ public class NewsPromotionDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_promotion_detail);
         imgNews = (ImageView) findViewById(R.id.imgNews);
-        txtDescriptionNews = (TextView) findViewById(R.id.txtDescriptionNews);
-        txtDetailNews = (TextView) findViewById(R.id.txtDetailNews);
+        txtNewsName = (TextView) findViewById(R.id.txtNewsName);
+        txtNewsDetail = (TextView) findViewById(R.id.txtNewsDetail);
         btnGoStore = (Button) findViewById(R.id.btnGoStore);
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             NewsPromotion objNews = bundle.getParcelable("News");
-            imgNews.setImageResource(objNews.getImage());
-            txtDescriptionNews.setText(objNews.getDescription());
-            txtDetailNews.setText(objNews.getDetail());
+            imgNews.setImageResource(objNews.getNewsImage());
+            txtNewsName.setText(objNews.getNewsName());
+            txtNewsDetail.setText(objNews.getNewsDetail());
         }else{
-            txtDetailNews.setText("Không có dữ liệu");
+            txtNewsDetail.setText("Không có dữ liệu");
         }
         btnGoStore.setOnClickListener(new View.OnClickListener() {
             @Override

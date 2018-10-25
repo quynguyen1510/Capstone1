@@ -33,8 +33,9 @@ public class NewsPromotionRecycleAdapter extends  RecyclerView.Adapter<NewsPromo
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        holder.imgNewsImg.setImageResource(arrayList.get(position).getImage());
-        holder.txtDescription.setText(arrayList.get(position).getDescription());
+        holder.imgNewsImg.setImageResource(arrayList.get(position).getNewsImage());
+        holder.txtNewsName.setText(arrayList.get(position).getNewsName());
+        holder.txtNewsDescription.setText(arrayList.get(position).getNewsDescription());
         final Bundle bundle = new Bundle();
         final Intent intent = new Intent(context,NewsPromotionDetailActivity.class);
         holder.setItemClickListener(new ItemClickListener() {
@@ -54,14 +55,15 @@ public class NewsPromotionRecycleAdapter extends  RecyclerView.Adapter<NewsPromo
 
     public class viewHolder extends RecyclerView.ViewHolder implements  View.OnLongClickListener , View.OnClickListener{
 
-        TextView txtDescription;
+        TextView txtNewsName,txtNewsDescription;
         ImageView imgNewsImg;
         private ItemClickListener itemClickListener;
 
         public viewHolder(View itemView) {
             super(itemView);
             imgNewsImg = (ImageView) itemView.findViewById(R.id.imgNewsImg);
-            txtDescription = (TextView) itemView.findViewById(R.id.txtDescription);
+            txtNewsName = (TextView) itemView.findViewById(R.id.txtNewsName);
+            txtNewsDescription = (TextView) itemView.findViewById(R.id.txtNewsDescription);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
