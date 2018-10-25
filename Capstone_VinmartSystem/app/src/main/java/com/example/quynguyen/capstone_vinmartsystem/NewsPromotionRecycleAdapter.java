@@ -55,7 +55,7 @@ public class NewsPromotionRecycleAdapter extends  RecyclerView.Adapter<NewsPromo
 
     public class viewHolder extends RecyclerView.ViewHolder implements  View.OnLongClickListener , View.OnClickListener{
 
-        TextView txtNewsName,txtNewsDescription;
+        TextView txtNewsName,txtNewsDescription,txtNewsDate;
         ImageView imgNewsImg;
         private ItemClickListener itemClickListener;
 
@@ -63,6 +63,7 @@ public class NewsPromotionRecycleAdapter extends  RecyclerView.Adapter<NewsPromo
             super(itemView);
             imgNewsImg = (ImageView) itemView.findViewById(R.id.imgNewsImg);
             txtNewsName = (TextView) itemView.findViewById(R.id.txtNewsName);
+            txtNewsDate = (TextView) itemView.findViewById(R.id.txtNewsDate);
             txtNewsDescription = (TextView) itemView.findViewById(R.id.txtNewsDescription);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
