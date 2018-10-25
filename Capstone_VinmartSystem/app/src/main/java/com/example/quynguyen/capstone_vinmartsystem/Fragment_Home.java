@@ -157,6 +157,7 @@ public class Fragment_Home extends Fragment {
                         }
                     }
                     newsPromotionRecycleAdapter.notifyDataSetChanged();
+
                 }
             },
                     new Response.ErrorListener() {

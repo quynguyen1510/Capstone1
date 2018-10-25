@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NewsPromotionDetailActivity extends AppCompatActivity {
-    TextView txtNewsName, txtNewsDetail;
+    TextView txtNewsName, txtNewsDetail, txtNewsDate;
     ImageView imgNews;
     Button btnGoStore;
 
@@ -20,6 +20,7 @@ public class NewsPromotionDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_promotion_detail);
         imgNews = (ImageView) findViewById(R.id.imgNews);
         txtNewsName = (TextView) findViewById(R.id.txtNewsName);
+        txtNewsDate = (TextView) findViewById(R.id.txtNewsDate);
         txtNewsDetail = (TextView) findViewById(R.id.txtNewsDetail);
         btnGoStore = (Button) findViewById(R.id.btnGoStore);
 
@@ -28,6 +29,7 @@ public class NewsPromotionDetailActivity extends AppCompatActivity {
             NewsPromotion objNews = bundle.getParcelable("News");
             imgNews.setImageResource(objNews.getNewsImage());
             txtNewsName.setText(objNews.getNewsName());
+            txtNewsDate.setText(objNews.getNewsDate());
             txtNewsDetail.setText(objNews.getNewsDetail());
         }else{
             txtNewsDetail.setText("Không có dữ liệu");
