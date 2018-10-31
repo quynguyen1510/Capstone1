@@ -8,7 +8,6 @@ public class User implements Parcelable {
     private String email;
     private String userName;
     private String passWord;
-    private String phoneNumber;
     private String address;
 
     public String getAddress() {
@@ -18,21 +17,19 @@ public class User implements Parcelable {
     public void setAddress(String address) {
         this.address = address;
     }
-    public User(String fullName, String email, String userName, String passWord, String phoneNumber, String address) {
+    public User(String fullName, String email, String userName, String passWord, String address) {
         this.fullName = fullName;
         this.email = email;
         this.userName = userName;
         this.passWord = passWord;
-        this.phoneNumber = phoneNumber;
         this.address = address;
     }
 
-    public User(String fullName, String email, String userName, String passWord, String phoneNumber) {
+    public User(String fullName, String email, String userName, String passWord) {
         this.fullName = fullName;
         this.email = email;
         this.userName = userName;
         this.passWord = passWord;
-        this.phoneNumber = phoneNumber;
     }
 
     protected User(Parcel in) {
@@ -40,7 +37,6 @@ public class User implements Parcelable {
         this.email = in.readString();
         this.userName = in.readString();
         this.passWord = in.readString();
-        this.phoneNumber = in.readString();
     }
 
     public String getFullName() {
@@ -75,14 +71,6 @@ public class User implements Parcelable {
         this.passWord = passWord;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -94,7 +82,7 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeString(userName);
         dest.writeString(passWord);
-        dest.writeString(phoneNumber);
+        dest.writeString(address);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

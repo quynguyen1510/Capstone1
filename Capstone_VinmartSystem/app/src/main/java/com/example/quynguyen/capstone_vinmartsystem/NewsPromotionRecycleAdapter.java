@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class NewsPromotionRecycleAdapter extends  RecyclerView.Adapter<NewsPromotionRecycleAdapter.viewHolder> {
 
-    ArrayList<NewsPromotion> arrayList;
+    ArrayList<NewsPromotion> arrayList, arraySubCat;
     Context context;
 
     public NewsPromotionRecycleAdapter(ArrayList<NewsPromotion> arrayList, Context context) {

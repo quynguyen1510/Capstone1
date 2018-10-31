@@ -24,7 +24,7 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/promotion1" />
+                android:src="@drawable/news1" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btnAddCart"

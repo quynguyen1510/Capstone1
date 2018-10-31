@@ -13,6 +13,7 @@ public class NewsPromotion implements Parcelable{
     private String newsDescription;
     private String newsDetail;
     private String newsDate;
+    private int parentID;
 
     public NewsPromotion(int newsID, String newsName, int newsImage, String newsDescription, String newsDetail, String newsDate) {
         this.newsID = newsID;
@@ -21,6 +22,24 @@ public class NewsPromotion implements Parcelable{
         this.newsDescription = newsDescription;
         this.newsDetail = newsDetail;
         this.newsDate = newsDate;
+    }
+
+    public NewsPromotion(int newsID, String newsName, int newsImage, String newsDescription, String newsDetail, String newsDate, int parentID) {
+        this.newsID = newsID;
+        this.newsName = newsName;
+        this.newsImage = newsImage;
+        this.newsDescription = newsDescription;
+        this.newsDetail = newsDetail;
+        this.newsDate = newsDate;
+        this.parentID = parentID;
+    }
+
+    public int getParentID() {
+        return parentID;
+    }
+
+    public void setParentID(int parentID) {
+        this.parentID = parentID;
     }
 
     public String getNewsDate() {

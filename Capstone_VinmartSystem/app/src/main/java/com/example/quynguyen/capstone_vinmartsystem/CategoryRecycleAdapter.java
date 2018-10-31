@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class CategoryRecycleAdapter extends RecyclerView.Adapter<CategoryRecycle
     ArrayList<Category> arrayList;
     Context context;
 
-    public CategoryRecycleAdapter(ArrayList<Category> arrayList, Context context) {
+    public CategoryRecycleAdapter(ArrayList<Category> arrayList , Context context) {
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -37,12 +36,11 @@ public class CategoryRecycleAdapter extends RecyclerView.Adapter<CategoryRecycle
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-               if(arrayList.get(position).getCatName().equals("Đồ uống")){
                    if(isLongClick == false){
-                       Intent intent = new Intent(context,DrinkProductActivity.class);
+                       Intent intent = new Intent(context,CategorySubActivity.class);
+                       intent.putExtra("Cat",arrayList.get(position));
                        context.startActivity(intent);
                    }
-               }
             }
         });
     }
@@ -82,4 +80,5 @@ public class CategoryRecycleAdapter extends RecyclerView.Adapter<CategoryRecycle
             return true;
         }
     }
+
 }
