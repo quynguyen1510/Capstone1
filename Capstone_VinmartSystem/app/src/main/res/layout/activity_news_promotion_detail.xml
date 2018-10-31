@@ -25,7 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/promotion1" />
+                    android:src="@drawable/news1" />
 
                 <TextView
                     android:id="@+id/txtNewsName"

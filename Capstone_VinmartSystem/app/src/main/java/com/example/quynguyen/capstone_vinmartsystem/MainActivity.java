@@ -1,6 +1,7 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     Fragment_Profile fragment_profile;
     Fragment_Detail_Profile fragment_detail_profile;
     Bundle bundle;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    String USERNAME_KEY = "user";
+    String PASS_KEY = "pass";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
         if(bundle != null){
-            User objUser = bundle.getParcelable("Account");
-            bundle.putParcelable("User",objUser);
+            User objUser = bundle.getParcelable("user");
+            bundle.putParcelable("user",objUser);
             fragment_detail_profile = new Fragment_Detail_Profile();
             fragment_detail_profile.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_detail_profile).commit();

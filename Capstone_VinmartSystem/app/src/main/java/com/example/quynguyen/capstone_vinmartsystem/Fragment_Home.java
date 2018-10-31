@@ -1,6 +1,7 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,7 +41,7 @@ public class Fragment_Home extends Fragment {
     NewsPromotionRecycleAdapter newsPromotionRecycleAdapter;
     CategoryRecycleAdapter categoryRecycleAdapter;
     ArrayList<Category> arrCat;
-    String urlGetCategory = "http://192.168.1.41:8080/androidwebservice/getcategory.php";
+    String urlGetCategory = "http://192.168.1.41:8080/androidwebservice/getparentcategory.php";
     String urlGetNews = "http://192.168.1.41:8080/androidwebservice/getnews.php";
 
     User user;
@@ -107,7 +108,7 @@ public class Fragment_Home extends Fragment {
     private void ReadJSON(final String urlData){
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         String [ ] arrString = urlData.split("/");
-        if(arrString[arrString.length-1].equals("getcategory.php")){
+        if(arrString[arrString.length-1].equals("getparentcategory.php")){
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlData, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
