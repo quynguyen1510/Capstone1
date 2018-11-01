@@ -1,29 +1,39 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
-import android.content.ClipData;
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class DrinkProductActivity extends AppCompatActivity {
-    public static final String NAME = "title";
-    public static final String DESCRIPTION = "description";
-    public static final int IMAGE = 1;
-    public static final int PRICE = 1;
-    public final String ARR = "arr";
     GridView gvProduct;
     ArrayList<Product> arrProduct;
     ProductAdapter productAdapter;
     Button btnBack,btnSearchSubNav;
     EditText edtSearchSubNav;
+    Category objCat;
+    Connect connect = new Connect();
+    int catID;
+    String url = connect.urlData + "/getproductbyid.php";
 
 
     @Override
@@ -34,23 +44,26 @@ public class DrinkProductActivity extends AppCompatActivity {
         btnBack = (Button) findViewById(R.id.btnBackMain);
         btnSearchSubNav = (Button) findViewById(R.id.btnSearchSubNav);
         edtSearchSubNav = (EditText) findViewById(R.id.edtSearchSubNav);
-
+        Intent intent = getIntent();
+        objCat = intent.getParcelableExtra("Cat");
+        catID = intent.getIntExtra("catID",0);
+        if(catID == 0 ) {
+            catID = objCat.getCatID();
+        }
         gvProduct = (GridView) findViewById(R.id.gridviewDrink);
         arrProduct = new ArrayList<>();
-        arrProduct.add(new Product(R.drawable.slurpee,"Slurpee","Thức uống có ga",20000,"15/10/2018"));
-        arrProduct.add(new Product(R.drawable.cafe,"Cà phê","Cà phê Việt Nam truyền thống",15000,"15/10/2018"));
-        arrProduct.add(new Product(R.drawable.tea," Trà","Trà xanh matcha",20000,"15/10/2018"));
         productAdapter = new ProductAdapter(this,R.layout.product_line,arrProduct);
         gvProduct.setAdapter(productAdapter);
+
+        //Read Json từ Server
+        ReadJSON(url);
 
         gvProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(arrProduct.get(position).getProductName().equals("Cà phê")){
                     Intent intent = new Intent(DrinkProductActivity.this,DetailProductActivity.class);
                     intent.putExtra("ARRPRODUCT",arrProduct.get(position));
                     startActivity(intent);
-                }
             }
         });
 
@@ -63,5 +76,41 @@ public class DrinkProductActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void ReadJSON(String urlData) {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        urlData = urlData + "?cat_id=" + catID;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlData, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        int image = getResources().getIdentifier(jsonObject.getString("Image"), "drawable", getPackageName());
+                        arrProduct.add(new Product(
+                                jsonObject.getInt("Pro_ID"),
+                                image,
+                                jsonObject.getString("Pro_Name"),
+                                jsonObject.getString("Desc"),
+                                jsonObject.getInt("Price"),
+                                jsonObject.getInt("Cat_ID"),
+                                jsonObject.getString("Pro_EXP")
+                        ));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                productAdapter.notifyDataSetChanged();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DrinkProductActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
     }
 }

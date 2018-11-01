@@ -30,7 +30,8 @@ public class Fragment_Detail_Profile extends Fragment {
 
     TextView txtEmail, txtAddress, txtUserName;
     User user;
-    String url = "http://192.168.1.41:8080/androidwebservice/getuser.php";
+    Connect connect = new Connect();
+    String url = connect.urlData + "/getuser.php";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String USERNAME_KEY = "user";
@@ -52,6 +53,9 @@ public class Fragment_Detail_Profile extends Fragment {
         //Kiểm tra user từ fragment_profile gửi qua có hay không
         if(bundle != null){
             user = bundle.getParcelable("user");
+            editor = sharedPreferences.edit();
+            editor.putString("user",user.getUserName());
+            editor.putString("pass",user.getPassWord());
             userName = user.getUserName();
             pass = user.getPassWord();
         }
@@ -73,6 +77,7 @@ public class Fragment_Detail_Profile extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             if(jsonObject.getInt("success") == 1){
                                 User objUser = new User(
+                                        jsonObject.getInt("cus_id"),
                                         jsonObject.getString("fullname"),
                                         jsonObject.getString("gmail"),
                                         jsonObject.getString("user"),

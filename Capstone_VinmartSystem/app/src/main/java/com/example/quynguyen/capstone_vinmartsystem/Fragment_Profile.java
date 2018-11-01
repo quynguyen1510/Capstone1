@@ -37,13 +37,13 @@ import static android.app.Activity.RESULT_OK;
 
 public class Fragment_Profile extends Fragment {
 
+    Connect connect = new Connect();
     Button btnLogin;
     EditText edtFullname, edtUser , edtEmail, edtPassword;
     TextView txtRegister;
-    String fullName , email, phone;
     Fragment_Home fragment_home;
     User user;
-    String url = "http://192.168.1.41:8080/androidwebservice/getuser.php";
+    String url = connect.urlData + "/getuser.php";
     public static final int REQUEST_CODE = 1997;
 
     @Nullable
@@ -66,14 +66,13 @@ public class Fragment_Profile extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edtUser.getText().toString().equals("admin") && edtPassword.getText().toString().equals("123456")){
-                    Intent intent = new Intent(getActivity(),MainActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("Account",new User(fullName,email,edtUser.getText().toString(),edtPassword.getText().toString(),phone));
-                    intent.putExtras(bundle);
-                    getActivity().startActivity(intent);
-                }
-
+//                if(edtUser.getText().toString().equals("admin") && edtPassword.getText().toString().equals("123456")){
+//                    Intent intent = new Intent(getActivity(),MainActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelable("Account",new User(fullName,email,edtUser.getText().toString(),edtPassword.getText().toString(),phone));
+//                    intent.putExtras(bundle);
+//                    getActivity().startActivity(intent);
+//                }
                 checkUser(url);
             }
         });
@@ -102,6 +101,7 @@ public class Fragment_Profile extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             if(jsonObject.getInt("success") == 1){
                                 User objUser = new User(
+                                        jsonObject.getInt("cus_id"),
                                         jsonObject.getString("fullname"),
                                         jsonObject.getString("gmail"),
                                         jsonObject.getString("user"),
