@@ -35,16 +35,17 @@ import java.util.Date;
 
 public class Fragment_Home extends Fragment {
 
+    Connect connect = new Connect();
     Button btnSearch, btnNotification;
     EditText edtSearch;
     ArrayList<NewsPromotion> arrNews;
     NewsPromotionRecycleAdapter newsPromotionRecycleAdapter;
     CategoryRecycleAdapter categoryRecycleAdapter;
     ArrayList<Category> arrCat;
-    String urlGetCategory = "http://192.168.1.41:8080/androidwebservice/getparentcategory.php";
-    String urlGetNews = "http://192.168.1.41:8080/androidwebservice/getnews.php";
-
+    String urlGetCategory = connect.urlData + "/getparentcategory.php";
+    String urlGetNews = connect.urlData +"/getnews.php";
     User user;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

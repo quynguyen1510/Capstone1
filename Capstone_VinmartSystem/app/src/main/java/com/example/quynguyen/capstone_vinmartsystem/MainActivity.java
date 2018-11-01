@@ -26,10 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment_Profile fragment_profile;
     Fragment_Detail_Profile fragment_detail_profile;
     Bundle bundle;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    String USERNAME_KEY = "user";
-    String PASS_KEY = "pass";
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bundle = getIntent().getExtras();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
         if(bundle != null){
             User objUser = bundle.getParcelable("user");
             bundle.putParcelable("user",objUser);

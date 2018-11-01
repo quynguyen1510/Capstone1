@@ -39,7 +39,7 @@ public class Fragment_Cart extends Fragment {
             objProduct = bundle.getParcelable("CARTPRODUCT");
             arrProduct.add(objProduct);
         }
-        arrProduct.add(new Product(R.drawable.slurpee,"Slurpee","Thức uống có ga",20000,"15/10/2018"));
+        arrProduct.add(new Product(4,R.drawable.slurpee,"Slurpee","Thức uống có ga",20000,1,"15/10/2018"));
         cartAdapter = new CartRecycleAdapter(arrProduct,getContext());
         recyclerView.setAdapter(cartAdapter);
         return view;

@@ -48,6 +48,7 @@ public class DetailProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(DetailProductActivity.this,DrinkProductActivity.class);
+                intent1.putExtra("catID",objProduct.getProductCatID());
                 startActivity(intent1);
             }
         });

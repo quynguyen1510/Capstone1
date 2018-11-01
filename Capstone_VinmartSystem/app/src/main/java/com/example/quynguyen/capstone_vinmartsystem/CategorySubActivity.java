@@ -20,16 +20,15 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class CategorySubActivity extends AppCompatActivity {
 
-    CategoryRecycleAdapter adapter;
+    Connect connect = new Connect();
+    CategorySubAdapter adapter;
     ArrayList<Category> arrSubCat;
-    String urlGetSubCat = "http://192.168.1.41:8080/androidwebservice/getsubcategory.php";
+    String urlGetSubCat = connect.urlData + "/getsubcategory.php";
     Category objCat;
     Button btnBackMain;
 
@@ -40,7 +39,10 @@ public class CategorySubActivity extends AppCompatActivity {
         int spanCount = 2;//Số cột nếu thiết lập lưới đứng, số dòng nếu lưới ngang
         int orientation = GridLayoutManager.VERTICAL;//Lưới đứng
         Intent intent = getIntent();
+
+        //Lấy object từ Cat của Fragment_Home
         objCat = intent.getParcelableExtra("Cat");
+
         btnBackMain = (Button) findViewById(R.id.btnBackMain);
         btnBackMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +58,7 @@ public class CategorySubActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
         gridLayoutManager.setOrientation(orientation);
         recyclerView.setLayoutManager(gridLayoutManager);
-        adapter = new CategoryRecycleAdapter(arrSubCat,this);
+        adapter = new CategorySubAdapter(arrSubCat,this);
         recyclerView.setAdapter(adapter);
         //Read Json and add to arrSubCat
         ReadJSON(urlGetSubCat);

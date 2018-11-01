@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                     addUser(urlInsertUser);
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
-                    user = new User(edtFullname.getText().toString(),edtEmail.getText().toString(),edtUser.getText().toString(),edtPassword.getText().toString(),edtAddress.getText().toString());
+                    user = new User(0,edtFullname.getText().toString(),edtEmail.getText().toString(),edtUser.getText().toString(),edtPassword.getText().toString(),edtAddress.getText().toString());
                     bundle.putParcelable("Account",user);
                     fragment_profile.setArguments(bundle);
                     intent.putExtras(bundle);

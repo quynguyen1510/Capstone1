@@ -4,26 +4,58 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Product implements Parcelable {
+    private int productID;
     private int productImg;
     private String productName;
     private String productDescription;
+    private int productQuantity;
     private int productPrice;
+    private int productCatID;
     private String productDate;
 
-    public Product(int productImg, String productName, String productDescription, int productPrice, String productDate) {
+    public Product(int productID,int productImg, String productName, String productDescription, int productPrice,int productCatID ,String productDate) {
+        this.productID = productID;
         this.productImg = productImg;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
+        this.productCatID = productCatID;
         this.productDate = productDate;
     }
 
     protected Product(Parcel in) {
+        this.productID = in.readInt();
         this.productImg = in.readInt();
         this.productName = in.readString();
         this.productDescription = in.readString();
+        this.productQuantity = in.readInt();
         this.productPrice = in.readInt();
+        this.productCatID = in.readInt();
         this.productDate = in.readString();
+    }
+
+    public int getProductCatID() {
+        return productCatID;
+    }
+
+    public void setProductCatID(int productCatID) {
+        this.productCatID = productCatID;
+    }
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
     }
 
     public int getProductImg() {
@@ -73,10 +105,13 @@ public class Product implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(productID);
         dest.writeInt(productImg);
         dest.writeString(productName);
         dest.writeString(productDescription);
+        dest.writeInt(productQuantity);
         dest.writeInt(productPrice);
+        dest.writeInt(productCatID);
         dest.writeString(productDate);
     }
 
