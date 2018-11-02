@@ -20,6 +20,7 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    SharedPreferences sharedPreferences;
     EditText edtSearch;
     Fragment_Cart fragment_cart;
     Fragment_Home fragment_home;
@@ -35,25 +36,18 @@ public class MainActivity extends AppCompatActivity {
 
         bundle = getIntent().getExtras();
         bottomNavigationView = findViewById(R.id.bottom_nav);
+        sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
         if(bundle != null){
             User objUser = bundle.getParcelable("user");
             bundle.putParcelable("user",objUser);
             fragment_detail_profile = new Fragment_Detail_Profile();
             fragment_detail_profile.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_detail_profile).commit();
+        }else if(sharedPreferences.getInt("loginForCart",0) == 1) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_Profile()).commit();
         }else{
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_Home()).commit();
         }
-
-//        if(bundle != null){
-//            Product objProduct = bundle.getParcelable("CARTPRODUCT");
-//            bundle.putParcelable("CART", objProduct);
-//            fragment_cart = new Fragment_Cart();
-//            fragment_cart.setArguments(bundle);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_cart).commit();
-//        }else{
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_Home()).commit();
-//        }
         bottomNavigationView.setOnNavigationItemSelectedListener(navLister);
 
     }

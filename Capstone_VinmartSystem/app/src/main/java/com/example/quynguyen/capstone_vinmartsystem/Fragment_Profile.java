@@ -66,13 +66,6 @@ public class Fragment_Profile extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(edtUser.getText().toString().equals("admin") && edtPassword.getText().toString().equals("123456")){
-//                    Intent intent = new Intent(getActivity(),MainActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putParcelable("Account",new User(fullName,email,edtUser.getText().toString(),edtPassword.getText().toString(),phone));
-//                    intent.putExtras(bundle);
-//                    getActivity().startActivity(intent);
-//                }
                 checkUser(url);
             }
         });

@@ -122,6 +122,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content" />
         <Button
+            android:id="@+id/btnLogout"
             android:layout_marginLeft="30dp"
             android:background="@drawable/login_custom"
             android:text="Logout"

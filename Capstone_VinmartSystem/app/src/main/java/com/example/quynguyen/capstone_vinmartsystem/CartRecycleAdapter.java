@@ -12,10 +12,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.viewHolder> {
-    ArrayList<Product> arrayList;
+    ArrayList<Cart> arrayList;
     Context context;
 
-    public CartRecycleAdapter(ArrayList<Product> arrayList, Context context) {
+    public CartRecycleAdapter(ArrayList<Cart> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -32,7 +32,8 @@ public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         holder.imageviewCartImg.setImageResource(arrayList.get(position).getProductImg());
         holder.txtCartName.setText(arrayList.get(position).getProductName());
-        holder.txtCartPrice.setText(arrayList.get(position).getProductPrice() + " VNĐ");
+        holder.txtCartPrice.setText(arrayList.get(position).getPrice() + " VNĐ");
+        holder.quantity.setText(String.valueOf(arrayList.get(position).getQuantity()));
     }
 
     @Override
