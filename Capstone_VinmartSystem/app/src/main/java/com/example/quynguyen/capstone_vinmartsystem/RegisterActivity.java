@@ -27,7 +27,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText edtFullname, edtUser , edtEmail, edtPassword,edtRepassword, edtAddress;
     User user ;
     Fragment_Profile fragment_profile = new Fragment_Profile();
-    String urlInsertUser = "http://192.168.1.41:8080/androidwebservice/insertuser.php";
+    Connect connect = new Connect();
+    String urlInsertUser = connect.urlData + "/insertuser.php";
 
 
     @Override

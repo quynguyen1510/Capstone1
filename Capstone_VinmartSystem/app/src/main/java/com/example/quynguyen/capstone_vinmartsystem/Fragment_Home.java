@@ -92,18 +92,12 @@ public class Fragment_Home extends Fragment {
         recyclerViewCat.setLayoutManager(gridLayoutManager);
         categoryRecycleAdapter = new CategoryRecycleAdapter(arrCat,getContext());
         recyclerViewCat.setAdapter(categoryRecycleAdapter);
-
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Bundle bundle = getArguments();
-        if(bundle != null){
-            User user = bundle.getParcelable("Account");
-            Toast.makeText(getContext(),user.getFullName().toString(),Toast.LENGTH_LONG).show();
-        }
     }
     //Read Json
     private void ReadJSON(final String urlData){

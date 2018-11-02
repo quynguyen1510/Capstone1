@@ -86,6 +86,7 @@ public class CategorySubActivity extends AppCompatActivity {
                 }
                 if(arrSubCat.size() == 0){
                     Intent intent = new Intent(CategorySubActivity.this,DrinkProductActivity.class);
+                    intent.putExtra("catID",objCat.getCatID());
                     startActivity(intent);
                 }
                 adapter.notifyDataSetChanged();

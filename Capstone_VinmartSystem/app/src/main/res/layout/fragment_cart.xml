@@ -10,12 +10,43 @@
         <include layout="@layout/toolbar_main"></include>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/scroll"
         android:layout_below="@id/toolbarID"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="450dp">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewCart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textColor="#090909"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:text="Tổng tiền: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/totalPrice"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/button_hover"
+            android:text="Thanh toán"
+            android:textColor="#fff" />
     </LinearLayout>
 </RelativeLayout>

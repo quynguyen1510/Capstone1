@@ -11,14 +11,7 @@ public class User implements Parcelable {
     private String passWord;
     private String address;
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public User(int cusID , String fullName, String email, String userName, String passWord, String address) {
+    public User(int cusID, String fullName, String email, String userName, String passWord, String address) {
         this.cusID = cusID;
         this.fullName = fullName;
         this.email = email;
@@ -27,21 +20,21 @@ public class User implements Parcelable {
         this.address = address;
     }
 
-    public User(String fullName, String email, String userName, String passWord) {
-        this.fullName = fullName;
-        this.email = email;
-        this.userName = userName;
-        this.passWord = passWord;
-    }
-
     protected User(Parcel in) {
         this.cusID = in.readInt();
         this.fullName = in.readString();
         this.email = in.readString();
         this.userName = in.readString();
         this.passWord = in.readString();
+        this.address = in.readString();
+    }
+    public String getAddress() {
+        return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
     public int getCusID() {
         return cusID;
     }

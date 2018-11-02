@@ -1,6 +1,6 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,41 +29,50 @@ import java.util.Map;
 
 public class Fragment_Detail_Profile extends Fragment {
 
+    Button btnLogout;
     TextView txtEmail, txtAddress, txtUserName;
     User user;
     Connect connect = new Connect();
-    String url = connect.urlData + "/getuser.php";
+    String urlData = connect.urlData + "/getuser.php";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String USERNAME_KEY = "user";
     String PASS_KEY = "pass";
-    String userName = "";
-    String pass = "";
+    String userName,pass;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail_profile,container,false);
+        final View view = inflater.inflate(R.layout.fragment_detail_profile,container,false);
 
         txtUserName = (TextView) view.findViewById(R.id.txtUserName);
         txtEmail = (TextView) view.findViewById(R.id.txtEmail);
         txtAddress = (TextView) view.findViewById(R.id.txtAddress);
+        btnLogout = (Button) view.findViewById(R.id.btnLogout);
 
         Bundle bundle = getArguments();
-        sharedPreferences = getActivity().getSharedPreferences("loginAcc",getContext().MODE_PRIVATE);
         //Kiểm tra user từ fragment_profile gửi qua có hay không
         if(bundle != null){
             user = bundle.getParcelable("user");
-            editor = sharedPreferences.edit();
-            editor.putString("user",user.getUserName());
-            editor.putString("pass",user.getPassWord());
             userName = user.getUserName();
             pass = user.getPassWord();
+        }else{
+            sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
+            userName = sharedPreferences.getString(USERNAME_KEY,"");
+            pass = sharedPreferences.getString(PASS_KEY,"");
         }
-        checkUser(url);
-        //Lưu login
-        userName = sharedPreferences.getString(USERNAME_KEY,"");
-        pass = sharedPreferences.getString(PASS_KEY,"");
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+                Intent intent = new Intent(getActivity(),MainActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+        checkUser(urlData);
         return view;
     }
 
@@ -87,9 +97,11 @@ public class Fragment_Detail_Profile extends Fragment {
                                 txtUserName.setText(objUser.getFullName());
                                 txtEmail.setText(objUser.getEmail());
                                 txtAddress.setText(objUser.getAddress());
+                                sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
                                 editor = sharedPreferences.edit();
                                 editor.putString(USERNAME_KEY,objUser.getUserName());
                                 editor.putString(PASS_KEY,objUser.getPassWord());
+                                editor.putInt("cus_id",objUser.getCusID());
                                 editor.commit();
                             }else{
                                 Toast.makeText(getActivity(), "Đăng nhập không thành công", Toast.LENGTH_SHORT).show();
