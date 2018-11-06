@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class Fragment_Detail_Profile extends Fragment {
 
-    Button btnLogout;
+    Button btnLogout,btnUpdate;
     TextView txtEmail, txtAddress, txtUserName;
     User user;
     Connect connect = new Connect();
@@ -39,6 +39,7 @@ public class Fragment_Detail_Profile extends Fragment {
     String USERNAME_KEY = "user";
     String PASS_KEY = "pass";
     String userName,pass;
+    Bundle bundle;
 
     @Nullable
     @Override
@@ -49,8 +50,9 @@ public class Fragment_Detail_Profile extends Fragment {
         txtEmail = (TextView) view.findViewById(R.id.txtEmail);
         txtAddress = (TextView) view.findViewById(R.id.txtAddress);
         btnLogout = (Button) view.findViewById(R.id.btnLogout);
+        btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         //Kiểm tra user từ fragment_profile gửi qua có hay không
         if(bundle != null){
             user = bundle.getParcelable("user");
@@ -69,6 +71,23 @@ public class Fragment_Detail_Profile extends Fragment {
                 editor.clear();
                 editor.commit();
                 Intent intent = new Intent(getActivity(),MainActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Gửi qua activity update
+                sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
+                user = new User(
+                        sharedPreferences.getInt("cus_id",0),
+                        txtUserName.getText().toString(),txtEmail.getText().toString(),
+                        sharedPreferences.getString(USERNAME_KEY,""),
+                        sharedPreferences.getString(PASS_KEY,""),
+                        txtAddress.getText().toString());
+                bundle.putParcelable("UpdateAcc",user);
+                Intent intent = new Intent(getActivity(),UpdateUserActivity.class);
+                intent.putExtras(bundle);
                 getActivity().startActivity(intent);
             }
         });
