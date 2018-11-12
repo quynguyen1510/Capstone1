@@ -1,8 +1,8 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
-
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,41 +37,92 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Fragment_Cart extends Fragment {
+public class Fragment_Cart extends Fragment{
 
+    GridView gridViewCart;
     SharedPreferences sharedPreferences;
     CartRecycleAdapter cartAdapter;
     ArrayList<Cart> arrCart;
     TextView totalPrice;
+    Button btnPayment;
     String urlData = new Connect().urlData + "/getcart.php";
+    String urlDelete = new Connect().urlData + "/deletecart.php";
+
     int cusID;
-    int total=0;
+    public int total=0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart,container,false);
-        arrCart = new ArrayList<>();
         totalPrice = view.findViewById(R.id.totalPrice);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewCart);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(layoutManager);
-
+        btnPayment = view.findViewById(R.id.btnPayment);
         sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
         cusID = sharedPreferences.getInt("cus_id",0);
-        cartAdapter = new CartRecycleAdapter(arrCart,getContext());
-        recyclerView.setAdapter(cartAdapter);
+
+        arrCart = new ArrayList<>();
+        gridViewCart = (GridView) view.findViewById(R.id.gridViewCart);
+        cartAdapter = new CartRecycleAdapter(arrCart,getContext(),R.layout.cart_item_row);
+        gridViewCart.setAdapter(cartAdapter);
+
         if(cusID == 0){
             Toast.makeText(getContext(), "Không có sản phẩm nào", Toast.LENGTH_LONG).show();
             totalPrice.setText("");
         }else {
             getCartData(urlData);
         }
+        gridViewCart.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                confirmDelete(arrCart.get(position).getProductName(),arrCart.get(position).getCartID());
+                return false;
+            }
+        });
+        btnPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cusID == 0){
+                    Toast.makeText(getContext(), "Hãy shopping nào", Toast.LENGTH_LONG).show();
+                    totalPrice.setText("");
+                }else {
+                    Intent intent = new Intent(getActivity(), InvoiceActivity.class);
+                    getActivity().startActivity(intent);
+                }
+            }
+        });
         return view;
     }
+    public void deleteCart(final int idCart){
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlDelete,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.trim().equals("complete")){
+                            Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getContext(), "Chưa xóa thành công!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), "Lỗi server", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("id_cart",String.valueOf(idCart));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
 
-    private void getCartData(String urlCart) {
+        private void getCartData(String urlCart) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         urlCart = urlData + "?cus_id=" + cusID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlCart, null, new Response.Listener<JSONArray>() {
@@ -79,6 +132,7 @@ public class Fragment_Cart extends Fragment {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
                         arrCart.add(new  Cart(
+                                jsonObject.getInt("cartID"),
                                 jsonObject.getString("productName"),
                                 jsonObject.getInt("productImg"),
                                 jsonObject.getInt("productID"),
@@ -86,7 +140,7 @@ public class Fragment_Cart extends Fragment {
                                 jsonObject.getInt("price"),
                                 jsonObject.getInt("cusID")
                         ));
-                         total = total + (arrCart.get(i).getPrice() * arrCart.get(i).getQuantity());
+                        total = total + (arrCart.get(i).getPrice() * arrCart.get(i).getQuantity());
                         totalPrice.setText(String.valueOf(total));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -103,6 +157,23 @@ public class Fragment_Cart extends Fragment {
                 }
         );
         requestQueue.add(jsonArrayRequest);
+    }
+    public void confirmDelete(String name, final int cartID){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setMessage("Bạn có muốn xóa "+name+" không?");
+        dialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteCart(cartID);
+            }
+        });
+        dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        dialog.show();
     }
 
 }

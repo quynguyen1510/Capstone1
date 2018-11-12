@@ -73,7 +73,8 @@ public class CategorySubActivity extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
-                        int image = getResources().getIdentifier(jsonObject.getString("Image"), "drawable", getPackageName());
+                        String []img = jsonObject.getString("Image").split("\\.");
+                        int image = getResources().getIdentifier(img[0], "drawable", getPackageName());
                         arrSubCat.add(new Category(
                                 jsonObject.getInt("ID"),
                                 image,

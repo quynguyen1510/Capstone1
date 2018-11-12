@@ -1,58 +1,91 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
+import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class CartRecycleAdapter extends RecyclerView.Adapter<CartRecycleAdapter.viewHolder> {
-    ArrayList<Cart> arrayList;
-    Context context;
+import static java.lang.String.*;
 
-    public CartRecycleAdapter(ArrayList<Cart> arrayList, Context context) {
+public class CartRecycleAdapter extends BaseAdapter {
+    private List<Cart> arrayList;
+    private Context context;
+    private int layout;
+
+    public CartRecycleAdapter(List<Cart> arrayList, Context context, int layout) {
         this.arrayList = arrayList;
         this.context = context;
-    }
-
-    @NonNull
-    @Override
-    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.cart_item_row,parent,false);
-        return new CartRecycleAdapter.viewHolder(itemView);
+        this.layout = layout;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        holder.imageviewCartImg.setImageResource(arrayList.get(position).getProductImg());
-        holder.txtCartName.setText(arrayList.get(position).getProductName());
-        holder.txtCartPrice.setText(arrayList.get(position).getPrice() + " VNĐ");
-        holder.quantity.setText(String.valueOf(arrayList.get(position).getQuantity()));
-    }
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return arrayList.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
 
-        TextView txtCartName, txtCartPrice, quantity, quantityLabel;
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    public class ViewHolder{
         ImageView imageviewCartImg;
+        TextView txtCartName;
+        TextView txtCartPrice;
+        TextView quantityLabel;
+        TextView quantity;
+    }
 
-        public viewHolder(View itemView) {
-            super(itemView);
-            imageviewCartImg = (ImageView) itemView.findViewById(R.id.imageviewCartImg);
-            txtCartName = (TextView) itemView.findViewById(R.id.txtCartName);
-            txtCartPrice = (TextView) itemView.findViewById(R.id.txtCartPrice);
-            quantityLabel = (TextView) itemView.findViewById(R.id.quantityLabel);
-            quantity  = (TextView) itemView.findViewById(R.id.quantity);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        if(convertView == null){
+            holder = new CartRecycleAdapter.ViewHolder();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(layout,null);
+            holder.imageviewCartImg = convertView.findViewById(R.id.imageviewCartImg);
+            holder.txtCartName = convertView.findViewById(R.id.txtCartName);
+            holder.txtCartPrice = convertView.findViewById(R.id.txtCartPrice);
+            holder.quantityLabel = convertView.findViewById(R.id.quantityLabel);
+            holder.quantity = convertView.findViewById(R.id.quantity);
+            convertView.setTag(holder);
+        }else{
+            holder = (CartRecycleAdapter.ViewHolder) convertView.getTag();
         }
+
+        Cart cart = arrayList.get(position);
+        holder.imageviewCartImg.setImageResource(cart.getProductImg());
+        holder.txtCartName.setText(cart.getProductName());
+        holder.txtCartPrice.setText(String.valueOf(cart.getPrice()));
+        holder.quantity.setText(String.valueOf(cart.getQuantity()));
+        return convertView;
     }
 }

@@ -81,7 +81,9 @@ public class DetailProductActivity extends AppCompatActivity {
                     editor.commit();
                     Intent intent = new Intent(DetailProductActivity.this,MainActivity.class);
                     startActivity(intent);
-                }else {
+                }else if(btnElegent.getNumber().equals("0")){
+                    Toast.makeText(DetailProductActivity.this, "Hãy chọn số lượng", Toast.LENGTH_SHORT).show();
+                }else{
                     addCart(urlData);
                 }
             }
@@ -116,7 +118,7 @@ public class DetailProductActivity extends AppCompatActivity {
                 params.put("product_name",objProduct.getProductName());
                 params.put("product_img",String.valueOf(objProduct.getProductImg()));
                 params.put("product_id",String.valueOf(objProduct.getProductID()));
-                params.put("quantity",String.valueOf(btnElegent.getNumber()));
+                params.put("quantity",btnElegent.getNumber());
                 params.put("price",String.valueOf(objProduct.getProductPrice() * Integer.parseInt(btnElegent.getNumber())));
                 params.put("cus_id",String.valueOf(sharedPreferences.getInt("cus_id",0)));
                 return params;

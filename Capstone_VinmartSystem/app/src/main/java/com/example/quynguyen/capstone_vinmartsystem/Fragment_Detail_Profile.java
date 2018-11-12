@@ -39,8 +39,6 @@ public class Fragment_Detail_Profile extends Fragment {
     String USERNAME_KEY = "user";
     String PASS_KEY = "pass";
     String userName,pass;
-    Bundle bundle;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,10 +79,12 @@ public class Fragment_Detail_Profile extends Fragment {
                 sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
                 user = new User(
                         sharedPreferences.getInt("cus_id",0),
-                        txtUserName.getText().toString(),txtEmail.getText().toString(),
+                        txtUserName.getText().toString(),
+                        txtEmail.getText().toString(),
                         sharedPreferences.getString(USERNAME_KEY,""),
                         sharedPreferences.getString(PASS_KEY,""),
                         txtAddress.getText().toString());
+                Bundle bundle = new Bundle();
                 bundle.putParcelable("UpdateAcc",user);
                 Intent intent = new Intent(getActivity(),UpdateUserActivity.class);
                 intent.putExtras(bundle);
@@ -121,6 +121,7 @@ public class Fragment_Detail_Profile extends Fragment {
                                 editor.putString(USERNAME_KEY,objUser.getUserName());
                                 editor.putString(PASS_KEY,objUser.getPassWord());
                                 editor.putInt("cus_id",objUser.getCusID());
+                                editor.putInt("loginForCart",2);
                                 editor.commit();
                             }else{
                                 Toast.makeText(getActivity(), "Đăng nhập không thành công", Toast.LENGTH_SHORT).show();
