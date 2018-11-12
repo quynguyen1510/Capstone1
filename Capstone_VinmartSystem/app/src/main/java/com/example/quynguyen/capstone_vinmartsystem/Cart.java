@@ -9,7 +9,8 @@ public class Cart  {
     private int price;
     private int cusID;
 
-    public Cart(String productName, int productImg, int productID, int quantity, int price, int cusID) {
+    public Cart(int cartID, String productName, int productImg, int productID, int quantity, int price, int cusID) {
+        this.cartID = cartID;
         this.productName = productName;
         this.productImg = productImg;
         this.productID = productID;

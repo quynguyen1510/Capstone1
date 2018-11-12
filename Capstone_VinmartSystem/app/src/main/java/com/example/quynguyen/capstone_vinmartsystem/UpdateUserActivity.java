@@ -26,6 +26,7 @@ public class UpdateUserActivity extends AppCompatActivity {
     EditText edtUpdateName,edtUpdatePass,edtPass,edtUpdateAddress;
     Button btnUpdate, btnCancle;
     User user;
+    String PASS_KEY = "pass";
     String urlUpdate = new Connect().urlData + "/updateuser.php";
 
     @Override
@@ -34,6 +35,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_user);
         AnhXa();
         Bundle bundle = getIntent().getExtras();
+        //Kiểm tra detail_login có gửi dữ liệu qua hay ko
         if(bundle != null){
             user = bundle.getParcelable("UpdateAcc");
             edtUpdateName.setText(user.getFullName());
@@ -55,14 +57,22 @@ public class UpdateUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 updateUser(urlUpdate);
-                user.setUserName(edtUpdateName.getText().toString());
+                sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+
+                user.setFullName(edtUpdateName.getText().toString());
                 user.setAddress(edtUpdateAddress.getText().toString());
-                if(edtUpdatePass.getText().toString().equals("") == false){
+                if(edtUpdatePass.getText().toString().equals("")){
+                    user.setPassWord(edtPass.getText().toString());
+                }else{
                     user.setPassWord(edtUpdatePass.getText().toString());
+                    editor = sharedPreferences.edit();
+                    editor.putString(PASS_KEY,user.getPassWord());
+                    editor.commit();
                 }
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("user",user);
                 Intent intent = new Intent(UpdateUserActivity.this,MainActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

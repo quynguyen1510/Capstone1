@@ -81,13 +81,14 @@ public class DrinkProductActivity extends AppCompatActivity {
     private void ReadJSON(String urlData) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         urlData = urlData + "?cat_id=" + catID;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlData, null, new Response.Listener<JSONArray>() {
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlData, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
-                        int image = getResources().getIdentifier(jsonObject.getString("Image"), "drawable", getPackageName());
+                        String []img = jsonObject.getString("Image").split("\\.");
+                        int image = getResources().getIdentifier(img[0], "drawable", getPackageName());
                         arrProduct.add(new Product(
                                 jsonObject.getInt("Pro_ID"),
                                 image,
