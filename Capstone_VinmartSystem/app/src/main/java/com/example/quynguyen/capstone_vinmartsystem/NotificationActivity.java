@@ -26,7 +26,7 @@ public class NotificationActivity extends AppCompatActivity {
     NotificationAdapter adapter;
     ArrayList<NewsPromotion> arrnewsPromotions;
     Button btnBackMain;
-    String urlGetNews = "http://192.168.1.41:8080/androidwebservice/getnews.php";
+    String urlGetNews = new Connect().urlData +"/getnews.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

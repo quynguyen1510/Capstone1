@@ -102,9 +102,14 @@ public class Fragment_Profile extends Fragment {
                                         jsonObject.getString("address")
                                         );
                                 Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(),MainActivity.class);
-                                intent.putExtra("user",objUser);
-                                getActivity().startActivity(intent);
+                                if(jsonObject.getInt("role") == 2){
+                                    Intent intent = new Intent(getActivity(),MapActivity.class);
+                                    getActivity().startActivity(intent);
+                                }else {
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    intent.putExtra("user", objUser);
+                                    getActivity().startActivity(intent);
+                                }
                             }else{
                                 Toast.makeText(getActivity(), "Đăng nhập không thành công", Toast.LENGTH_SHORT).show();
                             }
