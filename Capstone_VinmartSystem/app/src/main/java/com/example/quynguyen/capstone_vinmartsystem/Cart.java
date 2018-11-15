@@ -1,6 +1,9 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
-public class Cart  {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Cart implements Parcelable {
     private int cartID;
     private String productName;
     private int productImg;
@@ -74,4 +77,40 @@ public class Cart  {
     public void setCusID(int cusID) {
         this.cusID = cusID;
     }
+    protected Cart(Parcel in) {
+        this.cartID = in.readInt();
+        this.productName = in.readString();
+        this.productID = in.readInt();
+        this.productImg = in.readInt();
+        this.quantity = in.readInt();
+        this.price = in.readInt();
+        this.cusID = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(cartID);
+        dest.writeString(productName);
+        dest.writeInt(productImg);
+        dest.writeInt(productID);
+        dest.writeInt(quantity);
+        dest.writeInt(price);
+        dest.writeInt(cusID);
+    }
+    public static final Creator<Cart> CREATOR = new Creator<Cart>() {
+        @Override
+        public Cart createFromParcel(Parcel in) {
+            return new Cart(in);
+        }
+
+        @Override
+        public Cart[] newArray(int size) {
+            return new Cart[size];
+        }
+    };
 }

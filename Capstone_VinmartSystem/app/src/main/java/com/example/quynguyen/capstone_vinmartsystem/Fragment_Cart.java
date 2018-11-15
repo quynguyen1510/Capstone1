@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,9 +49,10 @@ public class Fragment_Cart extends Fragment{
     Button btnPayment;
     String urlData = new Connect().urlData + "/getcart.php";
     String urlDelete = new Connect().urlData + "/deletecart.php";
+    Bundle bundle;
 
     int cusID;
-    public int total=0;
+    int total=0;
 
     @Nullable
     @Override
@@ -61,7 +64,7 @@ public class Fragment_Cart extends Fragment{
         cusID = sharedPreferences.getInt("cus_id",0);
 
         arrCart = new ArrayList<>();
-        gridViewCart = (GridView) view.findViewById(R.id.gridViewCart);
+        gridViewCart =  view.findViewById(R.id.gridViewCart);
         cartAdapter = new CartRecycleAdapter(arrCart,getContext(),R.layout.cart_item_row);
         gridViewCart.setAdapter(cartAdapter);
 
@@ -69,8 +72,10 @@ public class Fragment_Cart extends Fragment{
             Toast.makeText(getContext(), "Không có sản phẩm nào", Toast.LENGTH_LONG).show();
             totalPrice.setText("");
         }else {
-            getCartData(urlData);
+           getCartData(urlData);
         }
+
+        //Xóa sản phẩm trong cart
         gridViewCart.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,6 +83,7 @@ public class Fragment_Cart extends Fragment{
                 return false;
             }
         });
+        //Xác nhận thanh toán
         btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +91,10 @@ public class Fragment_Cart extends Fragment{
                     Toast.makeText(getContext(), "Hãy shopping nào", Toast.LENGTH_LONG).show();
                     totalPrice.setText("");
                 }else {
+                    String total = totalPrice.getText().toString();
                     Intent intent = new Intent(getActivity(), InvoiceActivity.class);
+                    intent.putExtra("TotalPrice",total);
+                    intent.putExtra("Getbundle",bundle);
                     getActivity().startActivity(intent);
                 }
             }
@@ -121,8 +130,8 @@ public class Fragment_Cart extends Fragment{
         };
         requestQueue.add(stringRequest);
     }
-
-        private void getCartData(String urlCart) {
+    // Lấy dữ liệu giỏ hàng
+    private void getCartData(String urlCart) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         urlCart = urlData + "?cus_id=" + cusID;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlCart, null, new Response.Listener<JSONArray>() {
@@ -140,6 +149,8 @@ public class Fragment_Cart extends Fragment{
                                 jsonObject.getInt("price"),
                                 jsonObject.getInt("cusID")
                         ));
+                        bundle = new Bundle();
+                        bundle.putParcelableArrayList("GETCART",arrCart);
                         total = total + (arrCart.get(i).getPrice() * arrCart.get(i).getQuantity());
                         totalPrice.setText(String.valueOf(total));
                     } catch (JSONException e) {
@@ -158,6 +169,7 @@ public class Fragment_Cart extends Fragment{
         );
         requestQueue.add(jsonArrayRequest);
     }
+
     public void confirmDelete(String name, final int cartID){
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setMessage("Bạn có muốn xóa "+name+" không?");
