@@ -16,7 +16,7 @@
             android:textStyle="bold"
             android:textSize="30sp"
             android:textColor="#d92626"
-            android:text="Thông tin đặt hàng"
+            android:text="Xác nhận thông tin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <LinearLayout
@@ -25,23 +25,22 @@
             android:layout_below="@id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText
+            <TextView
+                android:textSize="20sp"
                 android:layout_marginTop="20dp"
-                android:id="@+id/edtCusPhone"
+                android:id="@+id/txtCusPhone"
                 android:layout_gravity="center_horizontal"
                 android:textColorHint="#090909"
                 android:hint="Nhập số điện thoại"
                 android:layout_width="300dp"
-                android:inputType="number"
-                android:maxLength="13"
                 android:layout_height="wrap_content" />
-            <EditText
+            <TextView
+                android:textSize="20sp"
                 android:layout_marginTop="20dp"
-                android:id="@+id/edtCusAddress"
+                android:id="@+id/txtCusAddres"
                 android:layout_gravity="center_horizontal"
                 android:textColorHint="#090909"
-                android:hint="Nhập địa chỉ giao hàng"
-                android:inputType="text"
+                android:hint="Nhập số địa chỉ giao hàng "
                 android:layout_width="300dp"
                 android:layout_height="wrap_content" />
             <LinearLayout
@@ -67,21 +66,33 @@
                     android:text="20000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
             </LinearLayout>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/txtTit"
+                android:text="Hóa đơn mua hàng:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/txtID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btnContinue"
-            android:textStyle="bold"
-            android:textColor="#fff"
-            android:background="@drawable/button_hover"
-            android:text="Tiếp tục"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/btnDone"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:background="@drawable/button_hover"
+                android:text="Hoàn tất mua hàng "
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

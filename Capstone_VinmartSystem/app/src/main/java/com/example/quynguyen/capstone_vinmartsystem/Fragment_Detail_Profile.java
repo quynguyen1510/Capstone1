@@ -122,6 +122,7 @@ public class Fragment_Detail_Profile extends Fragment {
                                 editor.putString(PASS_KEY,objUser.getPassWord());
                                 editor.putInt("cus_id",objUser.getCusID());
                                 editor.putInt("loginForCart",2);
+                                editor.putString("cus_name",objUser.getFullName());
                                 editor.commit();
                             }else{
                                 Toast.makeText(getActivity(), "Đăng nhập không thành công", Toast.LENGTH_SHORT).show();
