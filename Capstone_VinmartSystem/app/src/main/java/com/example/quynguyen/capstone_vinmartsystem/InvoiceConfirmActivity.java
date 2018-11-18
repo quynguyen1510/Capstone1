@@ -51,15 +51,16 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
             arrayList = bundle.getParcelableArrayList("GETCART");
         }
         getInvoiceID(urlGetInvoiceID);
+
+        //Hoàn thành mua hàng in ra chi tiết hóa đơn
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getInvoiceID(urlGetInvoiceID);
                 for (int i = 0 ; i < arrayList.size() ; i++){
                     addInvoice(arrayList.get(i));
                 }
                 deleteCart();
-                Intent intent = new Intent(InvoiceConfirmActivity.this,MainActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -110,7 +111,7 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("complete")){
-
+                            Toast.makeText(InvoiceConfirmActivity.this, "Hoàn tất mua hàng", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(InvoiceConfirmActivity.this, "Chưa mua hàng thành công!", Toast.LENGTH_SHORT).show();
                         }
@@ -146,7 +147,7 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.trim().equals("complete")){
-                            Toast.makeText(InvoiceConfirmActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+
                         }else{
                             Toast.makeText(InvoiceConfirmActivity.this, "Chưa xóa thành công!", Toast.LENGTH_SHORT).show();
                         }

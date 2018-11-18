@@ -25,6 +25,23 @@
             android:layout_below="@id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/txtTit"
+                    android:text="Hóa đơn mua hàng :"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
             <TextView
                 android:textSize="20sp"
                 android:layout_marginTop="20dp"
@@ -50,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="40dp"
                     android:textColor="#ff1122"
                     android:textSize="20sp"
                     android:id="@+id/txtLabel"
@@ -68,17 +85,7 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-            <TextView
-                android:layout_marginLeft="20dp"
-                android:id="@+id/txtTit"
-                android:text="Hóa đơn mua hàng:"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_marginLeft="20dp"
-                android:id="@+id/txtID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
         <LinearLayout

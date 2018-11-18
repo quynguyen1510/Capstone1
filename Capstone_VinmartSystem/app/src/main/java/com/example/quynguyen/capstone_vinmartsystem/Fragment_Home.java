@@ -51,7 +51,8 @@ public class Fragment_Home extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home,container,false);
 
-        edtSearch = (EditText) view.findViewById(R.id.edtSearch);
+        edtSearch = view.findViewById(R.id.edtSearch);
+        btnSearch = view.findViewById(R.id.btnSearchNav);
         Bundle bundle = getArguments();
         if(bundle != null){
             User user = bundle.getParcelable("Acc");
@@ -60,7 +61,7 @@ public class Fragment_Home extends Fragment {
 
         RecyclerView recyclerViewCat = (RecyclerView) view.findViewById(R.id.recyclerView);
         RecyclerView recyclerViewNew = (RecyclerView) view.findViewById(R.id.recyclerViewNews);
-        btnNotification = (Button) view.findViewById(R.id.btnNotification);
+        btnNotification = view.findViewById(R.id.btnNotification);
         btnNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +93,20 @@ public class Fragment_Home extends Fragment {
         recyclerViewCat.setLayoutManager(gridLayoutManager);
         categoryRecycleAdapter = new CategoryRecycleAdapter(arrCat,getContext());
         recyclerViewCat.setAdapter(categoryRecycleAdapter);
+
+        //Search product
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtSearch.getText().toString().trim().equals("")){
+                    Toast.makeText(getContext(), "Hãy nhập sản phẩm bạn muốn tìm kiếm", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    intent.putExtra("PRODUCTNAME", edtSearch.getText().toString().trim());
+                    getActivity().startActivity(intent);
+                }
+            }
+        });
         return view;
     }
 
