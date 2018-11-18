@@ -46,7 +46,7 @@ public class Fragment_Cart extends Fragment{
     CartRecycleAdapter cartAdapter;
     ArrayList<Cart> arrCart;
     TextView totalPrice;
-    Button btnPayment;
+    Button btnPayment,btnNotification;
     String urlData = new Connect().urlData + "/getcart.php";
     String urlDelete = new Connect().urlData + "/deletecart.php";
     Bundle bundle;
@@ -60,6 +60,7 @@ public class Fragment_Cart extends Fragment{
         View view = inflater.inflate(R.layout.fragment_cart,container,false);
         totalPrice = view.findViewById(R.id.totalPrice);
         btnPayment = view.findViewById(R.id.btnPayment);
+        btnNotification = view.findViewById(R.id.btnNotification);
         sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
         cusID = sharedPreferences.getInt("cus_id",0);
 
@@ -97,6 +98,14 @@ public class Fragment_Cart extends Fragment{
                     intent.putExtra("Getbundle",bundle);
                     getActivity().startActivity(intent);
                 }
+            }
+        });
+        //Nhảy qua notification
+        btnNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),NotificationActivity.class);
+                getActivity().startActivity(intent);
             }
         });
         return view;

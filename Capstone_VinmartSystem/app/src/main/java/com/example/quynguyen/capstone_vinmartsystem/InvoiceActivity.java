@@ -34,10 +34,7 @@ public class InvoiceActivity extends AppCompatActivity {
     TextView txtTongTien;
     Button btnContinue;
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     String urlInvoice = new Connect().urlData + "/insertinvoice.php";
-    String urlInsertDetail = new Connect().urlData + "/insertdetailinvoice.php";
-    String urlGetInvoiceID = new Connect().urlData + "/getidinvoice.php";
     Calendar getDate = Calendar.getInstance();
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
     String date = sf.format(getDate.getTime());
