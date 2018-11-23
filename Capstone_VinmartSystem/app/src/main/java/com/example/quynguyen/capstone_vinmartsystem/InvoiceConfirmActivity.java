@@ -1,5 +1,7 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -60,7 +62,8 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                 for (int i = 0 ; i < arrayList.size() ; i++){
                     addInvoice(arrayList.get(i));
                 }
-                deleteCart();
+                confirmMessage();
+
             }
         });
 
@@ -128,9 +131,11 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String,String> params = new HashMap<>();
                 sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+//                params.put("cus_id",sharedPreferences.getString("cus_id",""));
                 params.put("cus_name",sharedPreferences.getString("cus_name",""));
                 params.put("order_id",txtID.getText().toString().trim());
                 params.put("product_id",String.valueOf(objCart.getProductID()));
+//                params.put("productimg",String.valueOf(objCart.getProductImg()));
                 params.put("product_name",objCart.getProductName());
                 params.put("product_quantity",String.valueOf(objCart.getQuantity()));
                 return params;
@@ -171,4 +176,15 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    public void confirmMessage(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage("Cảm ơn bạn đã mua hàng shipper sẽ liên lạc với bạn trong vòng 3 phút");
+        dialog.setPositiveButton("Kết thúc", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteCart();
+            }
+        });
+        dialog.show();
+    }
 }
