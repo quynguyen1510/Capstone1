@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InvoiceActivity extends AppCompatActivity {
-    EditText edtCusPhone, edtCusAddress;
+    EditText edtCusPhone, edtCusAddress, edtCusDistrict;
     TextView txtTongTien;
     Button btnContinue;
     SharedPreferences sharedPreferences;
@@ -47,6 +47,9 @@ public class InvoiceActivity extends AppCompatActivity {
         AnhXa();
         Intent intent = getIntent();
         final Bundle bundle = intent.getBundleExtra("Getbundle");
+        if(bundle != null){
+            ArrayList<Cart> arrCart = bundle.getParcelableArrayList("GETCART");
+        }
         String total = intent.getStringExtra("TotalPrice");
         if(total.equals("") == false){
             txtTongTien.setText(total+" VNĐ");
@@ -54,8 +57,9 @@ public class InvoiceActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edtCusAddress.getText().toString().equals("") || edtCusPhone.getText().toString().equals("")){
-                    Toast.makeText(InvoiceActivity.this, "Hãy điền đầy đủ thông tin !", Toast.LENGTH_SHORT).show();
+                if(edtCusAddress.getText().toString().equals("") || edtCusPhone.getText().toString().equals("")
+                        || edtCusDistrict.getText().equals("")){
+                    Toast.makeText(InvoiceActivity.this, "Hãy điền đầy đủ thông tin để việc giao hàng được chính xác !", Toast.LENGTH_SHORT).show();
                 }else {
                     addInvoice(urlInvoice);
                     if (bundle != null) {
@@ -63,7 +67,7 @@ public class InvoiceActivity extends AppCompatActivity {
                         Intent intent = new Intent(InvoiceActivity.this, InvoiceConfirmActivity.class);
                         bundle.putParcelableArrayList("GETCART", arrCart);
                         intent.putExtra("PHONE", edtCusPhone.getText().toString().trim());
-                        intent.putExtra("ADDRESS", edtCusAddress.getText().toString().trim());
+                        intent.putExtra("ADDRESS", edtCusAddress.getText().toString().trim()+", "+edtCusDistrict.getText().toString().trim());
                         intent.putExtra("TOTAL", txtTongTien.getText().toString().trim());
                         intent.putExtra("CARTFORPAY", bundle);
                         startActivity(intent);
@@ -76,6 +80,7 @@ public class InvoiceActivity extends AppCompatActivity {
     public void AnhXa(){
         edtCusAddress = (EditText) findViewById(R.id.edtCusAddress);
         edtCusPhone = (EditText) findViewById(R.id.edtCusPhone);
+        edtCusDistrict = findViewById(R.id.edtCusDistrict);
         txtTongTien = (TextView) findViewById(R.id.txtTongTien);
         btnContinue = (Button) findViewById(R.id.btnContinue);
     }
@@ -115,6 +120,5 @@ public class InvoiceActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-
 
 }

@@ -1,6 +1,6 @@
 package com.example.quynguyen.capstone_vinmartsystem;
 
 public class Connect {
-//    String urlData = "http://192.168.1.29:8080/androidwebservice";
-    String urlData = "https://vinmart-systemvn.000webhostapp.com";
+    String urlData = "http://192.168.1.42:8080/androidwebservice";
+//    String urlData = "https://vinmart-systemvn.000webhostapp.com";
 }

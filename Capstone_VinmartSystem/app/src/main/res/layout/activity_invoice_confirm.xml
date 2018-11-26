@@ -26,17 +26,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:layout_marginLeft="23dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textColor="#050505"
+                    android:id="@+id/txtTit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="20dp"
-                    android:id="@+id/txtTit"
-                    android:text="Hóa đơn mua hàng :"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:text="Hóa đơn mua hàng :" />
                 <TextView
+                    android:textColor="#050505"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/txtID"
                     android:layout_width="wrap_content"

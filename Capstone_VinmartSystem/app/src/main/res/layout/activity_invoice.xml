@@ -44,6 +44,15 @@
                 android:inputType="text"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content" />
+            <EditText
+                android:layout_marginTop="20dp"
+                android:id="@+id/edtCusDistrict"
+                android:layout_gravity="center_horizontal"
+                android:textColorHint="#090909"
+                android:hint="Nhập quận"
+                android:inputType="text"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" />
             <LinearLayout
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"

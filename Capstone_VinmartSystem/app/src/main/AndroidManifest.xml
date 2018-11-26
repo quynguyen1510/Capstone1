@@ -3,6 +3,7 @@
     package="com.example.quynguyen.capstone_vinmartsystem">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -95,6 +96,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ListOrderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

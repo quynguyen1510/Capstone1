@@ -59,10 +59,25 @@
                 android:text="Số lượng : "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/imgMinus"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/minus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
+                android:layout_marginLeft="5dp"
                 android:id="@+id/quantity"
                 android:textColor="#0d0c0c"
                 android:text="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/imgPlus"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/plusq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

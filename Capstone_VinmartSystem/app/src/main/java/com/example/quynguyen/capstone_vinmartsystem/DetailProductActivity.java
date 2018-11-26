@@ -33,8 +33,7 @@ public class DetailProductActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     TextView txtProductName,txtProductDesc;
     ImageView imgProduct;
-    Button btnBack,btnSearchSubNav;
-    FloatingActionButton btnAddCart;
+    Button btnBack,btnSearchSubNav,btnAddCart;
     EditText edtSearchSubNav;
     ElegantNumberButton btnElegent;
     Fragment fragment_cart = new Fragment_Cart();
@@ -52,7 +51,7 @@ public class DetailProductActivity extends AppCompatActivity {
         btnBack = (Button) findViewById(R.id.btnBackMain);
         btnSearchSubNav = (Button) findViewById(R.id.btnSearchSubNav);
         edtSearchSubNav = (EditText) findViewById(R.id.edtSearchSubNav);
-        btnAddCart = (FloatingActionButton) findViewById(R.id.btnAddCart);
+        btnAddCart = (Button) findViewById(R.id.btnAddCart);
         btnElegent = (ElegantNumberButton) findViewById(R.id.btnElegent);
 
         Intent intent = getIntent();

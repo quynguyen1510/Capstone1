@@ -29,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +39,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Fragment_Cart extends Fragment{
@@ -66,14 +69,14 @@ public class Fragment_Cart extends Fragment{
 
         arrCart = new ArrayList<>();
         gridViewCart =  view.findViewById(R.id.gridViewCart);
-        cartAdapter = new CartRecycleAdapter(arrCart,getContext(),R.layout.cart_item_row);
+        cartAdapter = new CartRecycleAdapter(arrCart,getContext(),R.layout.cart_item_row,totalPrice);
         gridViewCart.setAdapter(cartAdapter);
 
         if(cusID == 0){
             Toast.makeText(getContext(), "Không có sản phẩm nào", Toast.LENGTH_LONG).show();
             totalPrice.setText("");
         }else {
-           getCartData(urlData);
+            getCartData(urlData);
         }
 
         //Xóa sản phẩm trong cart
@@ -92,6 +95,11 @@ public class Fragment_Cart extends Fragment{
                     Toast.makeText(getContext(), "Hãy shopping nào", Toast.LENGTH_LONG).show();
                     totalPrice.setText("");
                 }else {
+                    ArrayList<Cart> newCart = cartAdapter.getArrayList();
+                    if(newCart.size() > 0) {
+                        bundle = new Bundle();
+                        bundle.putParcelableArrayList("GETCART",newCart);
+                    }
                     String total = totalPrice.getText().toString();
                     Intent intent = new Intent(getActivity(), InvoiceActivity.class);
                     intent.putExtra("TotalPrice",total);
@@ -139,6 +147,7 @@ public class Fragment_Cart extends Fragment{
         };
         requestQueue.add(stringRequest);
     }
+
     // Lấy dữ liệu giỏ hàng
     private void getCartData(String urlCart) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -158,8 +167,6 @@ public class Fragment_Cart extends Fragment{
                                 jsonObject.getInt("price"),
                                 jsonObject.getInt("cusID")
                         ));
-                        bundle = new Bundle();
-                        bundle.putParcelableArrayList("GETCART",arrCart);
                         total = total + (arrCart.get(i).getPrice() * arrCart.get(i).getQuantity());
                         totalPrice.setText(String.valueOf(total));
                     } catch (JSONException e) {
@@ -186,6 +193,7 @@ public class Fragment_Cart extends Fragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteCart(cartID);
+                cartAdapter.notifyDataSetChanged();
             }
         });
         dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
