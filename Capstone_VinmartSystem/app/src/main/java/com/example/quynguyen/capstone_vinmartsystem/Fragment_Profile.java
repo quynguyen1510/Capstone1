@@ -37,13 +37,14 @@ import static android.app.Activity.RESULT_OK;
 
 public class Fragment_Profile extends Fragment {
 
-    Connect connect = new Connect();
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     Button btnLogin;
     EditText edtFullname, edtUser , edtEmail, edtPassword;
     TextView txtRegister;
     Fragment_Home fragment_home;
     User user;
-    String url = connect.urlData + "/getuser.php";
+    String url = new Connect().urlData + "/getuser.php";
     public static final int REQUEST_CODE = 1997;
 
     @Nullable
@@ -103,6 +104,10 @@ public class Fragment_Profile extends Fragment {
                                         );
                                 Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                 if(jsonObject.getInt("role") == 4){
+                                    sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
+                                    editor = sharedPreferences.edit();
+                                    editor.putInt("cus_id",objUser.getCusID());
+                                    editor.commit();
                                     Intent intent = new Intent(getActivity(),MapActivity.class);
                                     getActivity().startActivity(intent);
                                 }else {

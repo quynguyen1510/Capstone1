@@ -32,12 +32,15 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
     TextView txtTongTien;
     Button btnDone;
     ArrayList<Cart> arrayList;
+    String USERNAME_KEY = "user";
+    String PASS_KEY = "pass";
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String urlInsertDetail = new Connect().urlData + "/insertdetailinvoice.php";
     String urlGetInvoiceID = new Connect().urlData + "/getidinvoice.php";
     String urlDelete = new Connect().urlData + "/deletecartbyuser.php";
+    String urlGetUser = new Connect().urlData + "/getuser.php";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
         txtCusAddress.setText(intent.getStringExtra("ADDRESS"));
         txtCusPhone.setText(intent.getStringExtra("PHONE"));
         txtTongTien.setText(intent.getStringExtra("TOTAL"));
+        txtID.setText(intent.getStringExtra(""));
         if(bundle != null){
             arrayList = bundle.getParcelableArrayList("GETCART");
         }
@@ -58,12 +62,10 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getInvoiceID(urlGetInvoiceID);
                 for (int i = 0 ; i < arrayList.size() ; i++){
-                    addInvoice(arrayList.get(i));
+                        addInvoice(arrayList.get(i));
                 }
                 confirmMessage();
-
             }
         });
 
@@ -86,7 +88,7 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if(jsonObject.getInt("success") == 1){
-                                int orderID = jsonObject.getInt("invoice_id");
+                                int orderID = jsonObject.getInt("id");
                                 txtID.setText(String.valueOf(orderID));
                             }else{
                                 Toast.makeText(InvoiceConfirmActivity.this, "Lỗi", Toast.LENGTH_SHORT).show();
@@ -131,12 +133,12 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String,String> params = new HashMap<>();
                 sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
-//                params.put("cus_id",sharedPreferences.getString("cus_id",""));
-                params.put("cus_name",sharedPreferences.getString("cus_name",""));
+                params.put("cus_id",String.valueOf(sharedPreferences.getInt("cus_id",0)));
+//                params.put("cus_name",sharedPreferences.getString("cus_name",""));
                 params.put("order_id",txtID.getText().toString().trim());
+                params.put("productimg",String.valueOf(objCart.getProductImg()));
                 params.put("product_id",String.valueOf(objCart.getProductID()));
-//                params.put("productimg",String.valueOf(objCart.getProductImg()));
-                params.put("product_name",objCart.getProductName());
+//                params.put("product_name",objCart.getProductName());
                 params.put("product_quantity",String.valueOf(objCart.getQuantity()));
                 return params;
             }
@@ -176,6 +178,7 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    //Tin nhắn thông báo mua hàng thành công và chờ shipper
     public void confirmMessage(){
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setMessage("Cảm ơn bạn đã mua hàng shipper sẽ liên lạc với bạn trong vòng 3 phút");
@@ -183,8 +186,56 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteCart();
+                checkUser(urlGetUser);
             }
         });
         dialog.show();
+    }
+
+    private void checkUser(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getInt("success") == 1){
+                                User objUser = new User(
+                                        jsonObject.getInt("cus_id"),
+                                        jsonObject.getString("fullname"),
+                                        jsonObject.getString("gmail"),
+                                        jsonObject.getString("user"),
+                                        jsonObject.getString("pass"),
+                                        jsonObject.getString("address")
+                                );
+                                Intent intent = new Intent(InvoiceConfirmActivity.this,MainActivity.class);
+                                intent.putExtra("user", objUser);
+                                startActivity(intent);
+                            }else{
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(InvoiceConfirmActivity.this, "Lỗi server", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+                params.put("user",sharedPreferences.getString(USERNAME_KEY,""));
+                params.put("pass",sharedPreferences.getString(PASS_KEY,""));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 }

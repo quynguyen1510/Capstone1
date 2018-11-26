@@ -46,16 +46,13 @@ public class Fragment_Cart extends Fragment{
 
     GridView gridViewCart;
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     CartRecycleAdapter cartAdapter;
-    ArrayList<Cart> arrCart,newarrCart;
+    ArrayList<Cart> arrCart;
     TextView totalPrice;
     Button btnPayment,btnNotification;
     String urlData = new Connect().urlData + "/getcart.php";
     String urlDelete = new Connect().urlData + "/deletecart.php";
     Bundle bundle;
-    public final static String MYPRE = "cart";
-    public final static String KEY = "keycart";
 
     int cusID;
     int total=0;
@@ -74,9 +71,6 @@ public class Fragment_Cart extends Fragment{
         gridViewCart =  view.findViewById(R.id.gridViewCart);
         cartAdapter = new CartRecycleAdapter(arrCart,getContext(),R.layout.cart_item_row,totalPrice);
         gridViewCart.setAdapter(cartAdapter);
-        cartAdapter = new CartRecycleAdapter(arrCart,getContext(),R.layout.cart_item_row,totalPrice);
-        gridViewCart.setAdapter(cartAdapter);
-
 
         if(cusID == 0){
             Toast.makeText(getContext(), "Không có sản phẩm nào", Toast.LENGTH_LONG).show();
@@ -104,7 +98,7 @@ public class Fragment_Cart extends Fragment{
                     ArrayList<Cart> newCart = cartAdapter.getArrayList();
                     if(newCart.size() > 0) {
                         bundle = new Bundle();
-                        bundle.putParcelableArrayList("GETCART",arrCart);
+                        bundle.putParcelableArrayList("GETCART",newCart);
                     }
                     String total = totalPrice.getText().toString();
                     Intent intent = new Intent(getActivity(), InvoiceActivity.class);
@@ -153,6 +147,7 @@ public class Fragment_Cart extends Fragment{
         };
         requestQueue.add(stringRequest);
     }
+
     // Lấy dữ liệu giỏ hàng
     private void getCartData(String urlCart) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

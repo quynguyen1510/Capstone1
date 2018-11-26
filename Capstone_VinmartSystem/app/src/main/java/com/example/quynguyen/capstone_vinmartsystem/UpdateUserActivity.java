@@ -50,6 +50,7 @@ public class UpdateUserActivity extends AppCompatActivity {
                 editor.putInt("loginForCart",2);
                 editor.commit();
                 Intent intent = new Intent(UpdateUserActivity.this,MainActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });

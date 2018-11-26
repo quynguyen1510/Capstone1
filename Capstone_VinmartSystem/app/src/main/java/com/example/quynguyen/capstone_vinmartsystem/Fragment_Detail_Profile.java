@@ -32,8 +32,7 @@ public class Fragment_Detail_Profile extends Fragment {
     Button btnLogout,btnUpdate;
     TextView txtEmail, txtAddress, txtUserName;
     User user;
-    Connect connect = new Connect();
-    String urlData = connect.urlData + "/getuser.php";
+    String urlData = new Connect().urlData + "/getuser.php";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String USERNAME_KEY = "user";
