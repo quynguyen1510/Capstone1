@@ -36,7 +36,6 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
     String PASS_KEY = "pass";
 
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     String urlInsertDetail = new Connect().urlData + "/insertdetailinvoice.php";
     String urlGetInvoiceID = new Connect().urlData + "/getidinvoice.php";
     String urlDelete = new Connect().urlData + "/deletecartbyuser.php";
@@ -52,16 +51,17 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
         txtCusAddress.setText(intent.getStringExtra("ADDRESS"));
         txtCusPhone.setText(intent.getStringExtra("PHONE"));
         txtTongTien.setText(intent.getStringExtra("TOTAL"));
-        txtID.setText(intent.getStringExtra(""));
+        txtID.setText("");
         if(bundle != null){
             arrayList = bundle.getParcelableArrayList("GETCART");
+            getInvoiceID(urlGetInvoiceID);
         }
-        getInvoiceID(urlGetInvoiceID);
 
         //Hoàn thành mua hàng in ra chi tiết hóa đơn
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                getInvoiceID(urlGetInvoiceID);
                 for (int i = 0 ; i < arrayList.size() ; i++){
                         addInvoice(arrayList.get(i));
                 }
@@ -88,7 +88,7 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if(jsonObject.getInt("success") == 1){
-                                int orderID = jsonObject.getInt("id");
+                                int orderID = jsonObject.getInt("invoice_id")+1;
                                 txtID.setText(String.valueOf(orderID));
                             }else{
                                 Toast.makeText(InvoiceConfirmActivity.this, "Lỗi", Toast.LENGTH_SHORT).show();
@@ -134,11 +134,9 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                 Map<String,String> params = new HashMap<>();
                 sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
                 params.put("cus_id",String.valueOf(sharedPreferences.getInt("cus_id",0)));
-//                params.put("cus_name",sharedPreferences.getString("cus_name",""));
                 params.put("order_id",txtID.getText().toString().trim());
                 params.put("productimg",String.valueOf(objCart.getProductImg()));
                 params.put("product_id",String.valueOf(objCart.getProductID()));
-//                params.put("product_name",objCart.getProductName());
                 params.put("product_quantity",String.valueOf(objCart.getQuantity()));
                 return params;
             }

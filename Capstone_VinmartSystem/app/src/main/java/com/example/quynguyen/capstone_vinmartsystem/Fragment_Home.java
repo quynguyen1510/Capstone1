@@ -155,11 +155,10 @@ public class Fragment_Home extends Fragment {
                     for(int i = 0 ; i < response.length(); i++){
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            int image = getResources().getIdentifier(jsonObject.getString("Image"),"drawable",getActivity().getPackageName());
                             arrNews.add(new NewsPromotion(
                                     jsonObject.getInt("ID"),
                                     jsonObject.getString("Name"),
-                                    image,
+                                    getResources().getIdentifier(jsonObject.getString("Image"),"drawable",getActivity().getPackageName()),
                                     jsonObject.getString("Description"),
                                     jsonObject.getString("Detail"),
                                     jsonObject.getString("NewsDate")
