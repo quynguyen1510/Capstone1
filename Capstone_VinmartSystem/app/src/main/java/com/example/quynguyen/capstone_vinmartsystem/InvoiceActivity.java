@@ -33,7 +33,12 @@ public class InvoiceActivity extends AppCompatActivity {
     EditText edtCusPhone, edtCusAddress, edtCusDistrict;
     TextView txtTongTien;
     Button btnContinue;
+
+    String USERNAME_KEY = "user";
+    String PASS_KEY = "pass";
     SharedPreferences sharedPreferences;
+
+    String urlGetUser = new Connect().urlData + "/getuser.php";
     String urlInvoice = new Connect().urlData + "/insertinvoice.php";
     Calendar getDate = Calendar.getInstance();
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
@@ -54,6 +59,9 @@ public class InvoiceActivity extends AppCompatActivity {
         if(total.equals("") == false){
             txtTongTien.setText(total+" VNĐ");
         }
+        //lấy thông tin user fill vào phone và address
+        getUser(urlGetUser);
+
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +123,51 @@ public class InvoiceActivity extends AppCompatActivity {
                 params.put("cus_address",edtCusAddress.getText().toString().trim());
                 params.put("total",txtTongTien.getText().toString().trim());
                 params.put("export_date",date);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void getUser(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getInt("success") == 1){
+                                User objUser = new User(
+                                        jsonObject.getInt("cus_id"),
+                                        jsonObject.getString("fullname"),
+                                        jsonObject.getString("gmail"),
+                                        jsonObject.getString("user"),
+                                        jsonObject.getString("pass"),
+                                        jsonObject.getString("address")
+                                );
+                                edtCusAddress.setText(objUser.getAddress());
+                            }else{
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(InvoiceActivity.this, "Lỗi server", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+                params.put("user",sharedPreferences.getString(USERNAME_KEY,""));
+                params.put("pass",sharedPreferences.getString(PASS_KEY,""));
                 return params;
             }
         };

@@ -36,7 +36,6 @@ public class ListOrderActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         arrayList = new ArrayList<>();
-//        arrayList.add(new Delivery(1,95,"20-11-2018","254 Nguyễn Văn Linh","076012013"));
         deliveryAdapter =  new DeliveryAdapter(arrayList,this);
         recyclerView.setAdapter(deliveryAdapter);
         getInvoice(urlGetInvoice);
