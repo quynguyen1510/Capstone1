@@ -29,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     Fragment_Profile fragment_profile = new Fragment_Profile();
     Connect connect = new Connect();
     String urlInsertUser = connect.urlData + "/insertuser.php";
+    Validation validation = new Validation();
 
 
     @Override
@@ -49,22 +50,40 @@ public class RegisterActivity extends AppCompatActivity {
         btnCreateAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(edtUser.getText().toString().equals("") || edtPassword.getText().toString().equals("") || edtFullname.getText().toString().equals("")
                     || edtEmail.getText().toString().equals("") || edtAddress.getText().toString().equals("")    ){
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }else if(edtRepassword.getText().toString().equals(edtPassword.getText().toString().trim()) == false){
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập lại đúng password", Toast.LENGTH_SHORT).show();
-                }else{
-                    addUser(urlInsertUser);
-                    Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    user = new User(0,edtFullname.getText().toString(),edtEmail.getText().toString(),edtUser.getText().toString(),edtPassword.getText().toString(),edtAddress.getText().toString());
-                    bundle.putParcelable("Account",user);
-                    fragment_profile.setArguments(bundle);
-                    intent.putExtras(bundle);
-                    setResult(RESULT_OK,intent);
-                    finish();
-                }
+                }else if (edtPassword.getText().toString().length() < 2) {
+                    Toast.makeText(RegisterActivity.this, "Mật khẩu phải từ 8 đến 20 ký tự", Toast.LENGTH_SHORT).show();
+                }else if(validation.checkEmail(edtEmail.getText().toString().trim()) == false){
+                    Toast.makeText(RegisterActivity.this, "Bạn phải nhập đúng định dạng Email", Toast.LENGTH_SHORT).show();
+                }else if(edtUser.getText().toString().length() < 4){
+                    Toast.makeText(RegisterActivity.this, "Username phải từ 4 đến 16 ký tự", Toast.LENGTH_SHORT).show();
+                }else if(edtFullname.getText().toString().length() < 10){
+                    Toast.makeText(RegisterActivity.this, "Họ và tên phải từ 10 đến 80 ký tự", Toast.LENGTH_SHORT).show();
+                }else if(validation.checkNumberInString(edtFullname.getText().toString().trim()) == false){
+                    Toast.makeText(RegisterActivity.this, "Họ và tên không chứa ký tự số", Toast.LENGTH_SHORT).show();
+                }else if(validation.checkSpecialKey(edtFullname.getText().toString().trim()) == false){
+                    Toast.makeText(RegisterActivity.this, "Họ và tên không chứa ký tự đặc biệt", Toast.LENGTH_SHORT).show();
+                }else if(validation.checkSpecialKey(edtUser.getText().toString().trim()) == false){
+                    Toast.makeText(RegisterActivity.this, "Tên đăng nhập không chứa ký tự đặc biệt", Toast.LENGTH_SHORT).show();
+                }else if(validation.checkSpecialKey(edtPassword.getText().toString().trim()) == false){
+                    Toast.makeText(RegisterActivity.this, "Mật khẩu không chứa ký tự đặc biệt", Toast.LENGTH_SHORT).show();
+                }else
+                    {
+                        addUser(urlInsertUser);
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        user = new User(0,edtFullname.getText().toString(),edtEmail.getText().toString(),edtUser.getText().toString(),edtPassword.getText().toString(),edtAddress.getText().toString());
+                        bundle.putParcelable("Account",user);
+                        fragment_profile.setArguments(bundle);
+                        intent.putExtras(bundle);
+                        setResult(RESULT_OK,intent);
+                        finish();
+                    }
             }
         });
 
