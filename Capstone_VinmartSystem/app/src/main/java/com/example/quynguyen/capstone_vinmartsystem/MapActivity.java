@@ -40,7 +40,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     Location mLastLocation;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    Button btnInvoiceList,btnShipperLogout;
+    Button btnInvoiceList, btnShipperLogout;
     LatLng cusPosition;
     Delivery objDelivery;
     Bundle bundle;
@@ -55,92 +55,55 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.myMap);
         mapFragment.getMapAsync(this);
         bundle = getIntent().getBundleExtra("GET_INVOICE");
-        if(bundle != null){
+        if (bundle != null) {
             objDelivery = bundle.getParcelable("INVOICE");
-            cusPosition = getLocationFromAddress(this,objDelivery.getCusAddress());
-        }else{
-            cusPosition = getLocationFromAddress(this,"114 Quang Trung, Hải Châu");
+            cusPosition = getLocationFromAddress(this, objDelivery.getCusAddress());
+        } else {
+            cusPosition = getLocationFromAddress(this, "114 Quang Trung, Hải Châu");
         }
 
         btnInvoiceList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this,ListOrderActivity.class);
+                Intent intent = new Intent(MapActivity.this, ListOrderActivity.class);
                 startActivity(intent);
             }
         });
         btnShipperLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+                sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 editor.clear();
                 editor.commit();
-                Intent intent = new Intent(MapActivity.this,MainActivity.class);
+                Intent intent = new Intent(MapActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_CODE: {
-                if (grantResults.length > 0) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        buildLocationRequest();
-                        buildLocationCallback();
-
-                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-                    }
-                }else {
-                    Toast.makeText(this, "Should assign permission", Toast.LENGTH_SHORT).show();
-                }
-            }
-            break;
-            default:
-                break;
-        }
-    }
-
-    private void buildLocationCallback() {
-        locationCallback = new LocationCallback(){
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                mLastLocation = locationResult.getLastLocation();
-                Toast.makeText(MapActivity.this,new StringBuilder("")
-                        .append(mLastLocation.getLatitude())
-                        .append("/")
-                        .append(mLastLocation.getLongitude())
-                        .toString(), Toast.LENGTH_SHORT).show();
-            }
-        };
-    }
-
-    private void buildLocationRequest() {
-        locationRequest  = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setSmallestDisplacement(10f);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(3000);
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         maps = googleMap;
-        LatLng cusAddress = new LatLng(cusPosition.latitude,cusPosition.longitude);
+        LatLng cusAddress = new LatLng(cusPosition.latitude, cusPosition.longitude);
 
-        maps.moveCamera(CameraUpdateFactory.newLatLngZoom(cusAddress,13));
-        if(bundle != null) {
+        maps.moveCamera(CameraUpdateFactory.newLatLngZoom(cusAddress, 18));
+        if (bundle != null) {
             maps.addMarker(new MarkerOptions().title(objDelivery.getCusAddress()).snippet("Địa chỉ khách hàng").position(cusAddress));
-        }else{
+        } else {
             maps.addMarker(new MarkerOptions().title("Vinmart Hải Châu").snippet("Hệ thống cửa hàng Vinmart").position(cusAddress));
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        maps.setMyLocationEnabled(true);
     }
 
     //Lấy vị trí từ address khách hàng
