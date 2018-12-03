@@ -3,6 +3,7 @@ package com.example.quynguyen.capstone_vinmartsystem;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +31,11 @@ public class RegisterActivity extends AppCompatActivity {
     EditText edtFullname, edtUser , edtEmail, edtPassword,edtRepassword, edtAddress;
     User user ;
     Fragment_Profile fragment_profile = new Fragment_Profile();
-    Connect connect = new Connect();
-    String urlInsertUser = connect.urlData + "/insertuser.php";
+    String urlInsertUser = new Connect().urlData + "/insertuser.php";
+    String urlData = new Connect().urlData + "/checkuser.php";
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     Validation validation = new Validation();
 
 
@@ -38,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         AnhXa();
+
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +58,6 @@ public class RegisterActivity extends AppCompatActivity {
         btnCreateAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(edtUser.getText().toString().equals("") || edtPassword.getText().toString().equals("") || edtFullname.getText().toString().equals("")
                     || edtEmail.getText().toString().equals("") || edtAddress.getText().toString().equals("")    ){
                     Toast.makeText(RegisterActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
@@ -74,15 +81,21 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Mật khẩu không chứa ký tự đặc biệt", Toast.LENGTH_SHORT).show();
                 }else
                     {
-                        addUser(urlInsertUser);
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        user = new User(0,edtFullname.getText().toString(),edtEmail.getText().toString(),edtUser.getText().toString(),edtPassword.getText().toString(),edtAddress.getText().toString());
-                        bundle.putParcelable("Account",user);
-                        fragment_profile.setArguments(bundle);
-                        intent.putExtras(bundle);
-                        setResult(RESULT_OK,intent);
-                        finish();
+                        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                        checkUser(urlData);
+                        if(sharedPreferences.getInt("EXISTUSER",0) == 1){
+                            Toast.makeText(RegisterActivity.this, "Tài khoản đã có người sử dụng", Toast.LENGTH_SHORT).show();
+                        }else {
+                            addUser(urlInsertUser);
+                            Intent intent = new Intent();
+                            Bundle bundle = new Bundle();
+                            user = new User(0, edtFullname.getText().toString(), edtEmail.getText().toString(), edtUser.getText().toString(), edtPassword.getText().toString(), edtAddress.getText().toString());
+                            bundle.putParcelable("Account", user);
+                            fragment_profile.setArguments(bundle);
+                            intent.putExtras(bundle);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
                     }
             }
         });
@@ -90,16 +103,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void AnhXa(){
-        edtUser = (EditText) findViewById(R.id.edtUser);
-        edtPassword = (EditText) findViewById(R.id.edtPassword);
-        edtRepassword = (EditText) findViewById(R.id.edtRePassword);
-        edtFullname = (EditText) findViewById(R.id.edtFullname);
-        edtEmail = (EditText) findViewById(R.id.edtEmail);
-        edtAddress = (EditText) findViewById(R.id.edtAddress);
-        btnCreateAcc = (Button) findViewById(R.id.btnCreateAcc);
-        btnCancel = (Button) findViewById(R.id.btnCancel);
+        edtUser = findViewById(R.id.edtUser);
+        edtPassword = findViewById(R.id.edtPassword);
+        edtRepassword = findViewById(R.id.edtRePassword);
+        edtFullname = findViewById(R.id.edtFullname);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtAddress = findViewById(R.id.edtAddress);
+        btnCreateAcc = findViewById(R.id.btnCreateAcc);
+        btnCancel = findViewById(R.id.btnCancel);
     }
 
+    //Add user nếu thành công
     private void addUser(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -128,6 +142,65 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("name",edtFullname.getText().toString().trim());
                 params.put("address",edtAddress.getText().toString().trim());
                 params.put("gmail",edtEmail.getText().toString().trim());
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //Kiểm tra username đã có hay chưa
+    private void checkUser(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getInt("success") == 1){
+                                User objUser = new User(
+                                        jsonObject.getInt("cus_id"),
+                                        jsonObject.getString("fullname"),
+                                        jsonObject.getString("gmail"),
+                                        jsonObject.getString("user"),
+                                        jsonObject.getString("pass"),
+                                        jsonObject.getString("address")
+                                );
+                                if(objUser != null) {
+                                    sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                                    editor = sharedPreferences.edit();
+                                    editor.putInt("EXISTUSER", 1);
+                                    editor.commit();
+                                    edtUser.setText("");
+                                }else{
+                                    sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                                    editor = sharedPreferences.edit();
+                                    editor.putInt("EXISTUSER",0);
+                                    editor.commit();
+                                    Toast.makeText(RegisterActivity.this, "Chưa có ai đăng ký", Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+                                sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                                editor = sharedPreferences.edit();
+                                editor.putInt("EXISTUSER",0);
+                                editor.commit();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(RegisterActivity.this, "Lỗi server", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("user",edtUser.getText().toString().trim());
                 return params;
             }
         };
