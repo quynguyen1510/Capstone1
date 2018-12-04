@@ -62,6 +62,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             cusPosition = getLocationFromAddress(this, "114 Quang Trung, Hải Châu");
         }
 
+        //List hóa đơn mà shipper phải giao
         btnInvoiceList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +70,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+
+        //Đăng xuất khỏi màn hình shipper
         btnShipperLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +90,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         maps = googleMap;
         LatLng cusAddress = new LatLng(cusPosition.latitude, cusPosition.longitude);
 
-        maps.moveCamera(CameraUpdateFactory.newLatLngZoom(cusAddress, 18));
+        maps.moveCamera(CameraUpdateFactory.newLatLngZoom(cusAddress, 15));
         if (bundle != null) {
             maps.addMarker(new MarkerOptions().title(objDelivery.getCusAddress()).snippet("Địa chỉ khách hàng").position(cusAddress));
         } else {

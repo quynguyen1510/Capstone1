@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Validation validation = new Validation();
+    StringLibrary stringLibrary = new StringLibrary();
 
 
     @Override
@@ -138,7 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
                 params.put("username",edtUser.getText().toString().trim());
-                params.put("pass",edtPassword.getText().toString().trim());
+                params.put("pass",stringLibrary.md5(edtPassword.getText().toString().trim()));
                 params.put("name",edtFullname.getText().toString().trim());
                 params.put("address",edtAddress.getText().toString().trim());
                 params.put("gmail",edtEmail.getText().toString().trim());

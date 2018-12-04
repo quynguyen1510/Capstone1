@@ -26,6 +26,8 @@ public class UpdateUserActivity extends AppCompatActivity {
     EditText edtUpdateName,edtUpdatePass,edtPass,edtUpdateAddress;
     Button btnUpdate, btnCancle;
     User user;
+
+    StringLibrary stringLibrary = new StringLibrary();
     String PASS_KEY = "pass";
     String urlUpdate = new Connect().urlData + "/updateuser.php";
 
@@ -112,7 +114,7 @@ public class UpdateUserActivity extends AppCompatActivity {
                 if(edtUpdatePass.getText().toString().equals("")){
                     params.put("pass",edtPass.getText().toString().trim());
                 }else{
-                    params.put("pass",edtUpdatePass.getText().toString().trim());
+                    params.put("pass",stringLibrary.md5(edtUpdatePass.getText().toString().trim()));
                 }
                 params.put("cus_id",String.valueOf(user.getCusID()));
                 params.put("name",edtUpdateName.getText().toString().trim());

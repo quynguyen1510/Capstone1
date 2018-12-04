@@ -39,6 +39,8 @@ public class Fragment_Profile extends Fragment {
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    StringLibrary stringLibrary = new StringLibrary();
+
     Button btnLogin;
     EditText edtFullname, edtUser , edtEmail, edtPassword;
     TextView txtRegister;
@@ -134,7 +136,7 @@ public class Fragment_Profile extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
                 params.put("user",edtUser.getText().toString().trim());
-                params.put("pass",edtPassword.getText().toString().trim());
+                params.put("pass",stringLibrary.md5(edtPassword.getText().toString().trim()));
                 return params;
             }
         };
