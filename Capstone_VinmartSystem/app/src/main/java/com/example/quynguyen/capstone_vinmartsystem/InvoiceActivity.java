@@ -2,12 +2,14 @@ package com.example.quynguyen.capstone_vinmartsystem;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,15 +29,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InvoiceActivity extends AppCompatActivity {
-    EditText edtCusPhone, edtCusAddress, edtCusDistrict;
+    Spinner spnCusDistrict;
+    EditText edtCusPhone, edtCusAddress;
     TextView txtTongTien;
     Button btnContinue;
 
     String USERNAME_KEY = "user";
     String PASS_KEY = "pass";
+    String DISTRICT = "";
     SharedPreferences sharedPreferences;
 
     String urlGetUser = new Connect().urlData + "/getuser.php";
@@ -43,6 +48,8 @@ public class InvoiceActivity extends AppCompatActivity {
     Calendar getDate = Calendar.getInstance();
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
     String date = sf.format(getDate.getTime());
+
+
 
 
     @Override
@@ -56,6 +63,27 @@ public class InvoiceActivity extends AppCompatActivity {
             ArrayList<Cart> arrCart = bundle.getParcelableArrayList("GETCART");
         }
         String total = intent.getStringExtra("TotalPrice");
+        List<String> listDistrict = new ArrayList<>();
+        listDistrict.add("Hải Châu");
+        listDistrict.add("Thanh Khê");
+        listDistrict.add("Sơn Trà");
+        listDistrict.add("Liên Chiểu");
+        listDistrict.add("Cẩm Lệ");
+        listDistrict.add("Ngũ Hành Sơn");
+        listDistrict.add("Hòa Vang");
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,listDistrict);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        spnCusDistrict.setAdapter(adapter);
+        spnCusDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                DISTRICT = spnCusDistrict.getSelectedItem().toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         if(total.equals("") == false){
             txtTongTien.setText(total+" VNĐ");
         }
@@ -65,8 +93,7 @@ public class InvoiceActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edtCusAddress.getText().toString().equals("") || edtCusPhone.getText().toString().equals("")
-                        || edtCusDistrict.getText().equals("")){
+                if(edtCusAddress.getText().toString().equals("") || edtCusPhone.getText().toString().equals("")){
                     Toast.makeText(InvoiceActivity.this, "Hãy điền đầy đủ thông tin để việc giao hàng được chính xác !", Toast.LENGTH_SHORT).show();
                 }else {
                     addInvoice(urlInvoice);
@@ -75,7 +102,7 @@ public class InvoiceActivity extends AppCompatActivity {
                         Intent intent = new Intent(InvoiceActivity.this, InvoiceConfirmActivity.class);
                         bundle.putParcelableArrayList("GETCART", arrCart);
                         intent.putExtra("PHONE", edtCusPhone.getText().toString().trim());
-                        intent.putExtra("ADDRESS", edtCusAddress.getText().toString().trim()+", "+edtCusDistrict.getText().toString().trim());
+                        intent.putExtra("ADDRESS", edtCusAddress.getText().toString().trim()+", "+DISTRICT);
                         intent.putExtra("TOTAL", txtTongTien.getText().toString().trim());
                         intent.putExtra("CARTFORPAY", bundle);
                         startActivity(intent);
@@ -88,7 +115,7 @@ public class InvoiceActivity extends AppCompatActivity {
     public void AnhXa(){
         edtCusAddress = (EditText) findViewById(R.id.edtCusAddress);
         edtCusPhone = (EditText) findViewById(R.id.edtCusPhone);
-        edtCusDistrict = findViewById(R.id.edtCusDistrict);
+        spnCusDistrict = findViewById(R.id.spnCusDistrict);
         txtTongTien = (TextView) findViewById(R.id.txtTongTien);
         btnContinue = (Button) findViewById(R.id.btnContinue);
     }
@@ -101,7 +128,7 @@ public class InvoiceActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.trim().equals("complete")){
-                            Toast.makeText(InvoiceActivity.this, "Mua hàng thành công", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(InvoiceActivity.this, "Mua hàng thành công", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(InvoiceActivity.this, "Chưa mua hàng thành công!", Toast.LENGTH_SHORT).show();
                         }
@@ -129,6 +156,7 @@ public class InvoiceActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    //Lấy người dùng từ bảng user
     private void getUser(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,

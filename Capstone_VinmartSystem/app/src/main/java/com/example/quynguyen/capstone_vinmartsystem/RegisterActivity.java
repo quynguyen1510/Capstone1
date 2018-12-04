@@ -166,6 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         jsonObject.getString("pass"),
                                         jsonObject.getString("address")
                                 );
+                                //Nếu user đã tồn tại thì set = 1 để kiểm tra
                                 if(objUser != null) {
                                     sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
                                     editor = sharedPreferences.edit();
@@ -173,6 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     editor.commit();
                                     edtUser.setText("");
                                 }else{
+                                    // ngược lại không có set = 0
                                     sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
                                     editor = sharedPreferences.edit();
                                     editor.putInt("EXISTUSER",0);
