@@ -44,12 +44,11 @@
                 android:inputType="text"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content" />
-            <EditText
+            <Spinner
                 android:layout_marginTop="20dp"
-                android:id="@+id/edtCusDistrict"
+                android:id="@+id/spnCusDistrict"
                 android:layout_gravity="center_horizontal"
                 android:textColorHint="#090909"
-                android:hint="Nhập quận"
                 android:inputType="text"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content" />
