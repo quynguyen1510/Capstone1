@@ -23,6 +23,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +42,11 @@ public class DetailProductActivity extends AppCompatActivity {
     Fragment fragment_cart = new Fragment_Cart();
     Product objProduct;
     String urlData  = new Connect().urlData + "/insertcart.php";
+
+    //Thư viện firebase
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference reference = database.getReference("vinmart-delivery-224708");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,47 +91,25 @@ public class DetailProductActivity extends AppCompatActivity {
                 }else if(btnElegent.getNumber().equals("0")){
                     Toast.makeText(DetailProductActivity.this, "Hãy chọn số lượng", Toast.LENGTH_SHORT).show();
                 }else{
-                    addCart(urlData);
+
+                    Cart objCart = new Cart(0,objProduct.getProductName(),objProduct.getProductImg(),objProduct.getProductID(),Integer.parseInt(btnElegent.getNumber()),objProduct.getProductPrice(),sharedPreferences.getInt("cus_id",0));
+                    // trỏ dến thư mục Cart+ cusid trên firebase sau đó add sản phẩm vào
+                    reference.child("Cart"+sharedPreferences.getInt("cus_id",0)).child(objCart.getProductName()).setValue(objCart, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError == null){
+                                Toast.makeText(DetailProductActivity.this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(DetailProductActivity.this, "Thêm vào giỏ hàng không thành công", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                 }
             }
         });
 
     }
 
-    private void addCart(String url){
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response.trim().equals("complete")){
-                            Toast.makeText(DetailProductActivity.this, "Thêm vào giỏ thành công", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(DetailProductActivity.this, "Chưa thêm thành công!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DetailProductActivity.this, "Lỗi server", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
-                params.put("product_name",objProduct.getProductName());
-                params.put("product_img",String.valueOf(objProduct.getProductImg()));
-                params.put("product_id",String.valueOf(objProduct.getProductID()));
-                params.put("quantity",btnElegent.getNumber());
-                params.put("price",String.valueOf(objProduct.getProductPrice() * Integer.parseInt(btnElegent.getNumber())));
-                params.put("cus_id",String.valueOf(sharedPreferences.getInt("cus_id",0)));
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
 
 }

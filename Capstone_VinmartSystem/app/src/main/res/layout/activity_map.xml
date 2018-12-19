@@ -7,37 +7,57 @@
     android:orientation="vertical"
     tools:context=".MapActivity">
     <LinearLayout
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <fragment
-        android:id="@+id/myMap"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"></fragment>
+        <include layout="@layout/toolbar_map"></include>
     </LinearLayout>
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
+        android:layout_below="@id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btnInvoiceList"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:text="Danh sách hóa đơn"
-            android:background="@drawable/button_hover"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content" />
+        <fragment
+            android:id="@+id/myMap"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"></fragment>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal">
         <Button
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btnShipperLogout"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:text="Log out"
-            android:background="@drawable/button_hover"
+            android:id="@+id/btnInvoiceList"
             android:layout_width="170dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:stateListAnimator="@null"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_hover"
+            android:text="Danh sách hóa đơn"
+            android:layout_marginBottom="10dp"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+        <Button
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/btnInvoiceList"
+            android:id="@+id/btnShipperLogout"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_hover"
+            android:text="Log out"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+        <com.nex3z.notificationbadge.NotificationBadge
+            android:id="@+id/badge"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/btnInvoiceList"
+            android:layout_marginRight="-30dp"
+            android:layout_toLeftOf="@id/btnInvoiceList"
+            app:badgeBackground="@drawable/item_count"
+            app:maxTextLength="2" />
+    </RelativeLayout>
 </RelativeLayout>

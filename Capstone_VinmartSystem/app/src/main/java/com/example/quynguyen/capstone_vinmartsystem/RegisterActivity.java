@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     Button btnCreateAcc, btnCancel;
-    EditText edtFullname, edtUser , edtEmail, edtPassword,edtRepassword, edtAddress;
+    EditText edtFullname, edtUser , edtEmail, edtPassword,edtRepassword, edtAddress, edtPhone;
     User user ;
     Fragment_Profile fragment_profile = new Fragment_Profile();
     String urlInsertUser = new Connect().urlData + "/insertuser.php";
@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                             addUser(urlInsertUser);
                             Intent intent = new Intent();
                             Bundle bundle = new Bundle();
-                            user = new User(0, edtFullname.getText().toString(), edtEmail.getText().toString(), edtUser.getText().toString(), edtPassword.getText().toString(), edtAddress.getText().toString());
+                            user = new User(0, edtFullname.getText().toString(), edtEmail.getText().toString(), edtUser.getText().toString(), edtPassword.getText().toString(), edtAddress.getText().toString(), edtPhone.getText().toString().trim());
                             bundle.putParcelable("Account", user);
                             fragment_profile.setArguments(bundle);
                             intent.putExtras(bundle);
@@ -110,6 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
         edtFullname = findViewById(R.id.edtFullname);
         edtEmail = findViewById(R.id.edtEmail);
         edtAddress = findViewById(R.id.edtAddress);
+        edtPhone = findViewById(R.id.edtPhone);
         btnCreateAcc = findViewById(R.id.btnCreateAcc);
         btnCancel = findViewById(R.id.btnCancel);
     }
@@ -143,6 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("name",edtFullname.getText().toString().trim());
                 params.put("address",edtAddress.getText().toString().trim());
                 params.put("gmail",edtEmail.getText().toString().trim());
+                params.put("phone",edtPhone.getText().toString().trim());
                 return params;
             }
         };
@@ -165,7 +167,8 @@ public class RegisterActivity extends AppCompatActivity {
                                         jsonObject.getString("gmail"),
                                         jsonObject.getString("user"),
                                         jsonObject.getString("pass"),
-                                        jsonObject.getString("address")
+                                        jsonObject.getString("address"),
+                                        jsonObject.getString("phone")
                                 );
                                 //Nếu user đã tồn tại thì set = 1 để kiểm tra
                                 if(objUser != null) {

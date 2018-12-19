@@ -102,10 +102,11 @@ public class Fragment_Profile extends Fragment {
                                         jsonObject.getString("gmail"),
                                         jsonObject.getString("user"),
                                         jsonObject.getString("pass"),
-                                        jsonObject.getString("address")
+                                        jsonObject.getString("address"),
+                                        jsonObject.getString("phone")
                                         );
                                 Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                if(jsonObject.getInt("role") == 4){
+                                if(jsonObject.getInt("role") == 3){
                                     sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
                                     editor = sharedPreferences.edit();
                                     editor.putInt("cus_id",objUser.getCusID());

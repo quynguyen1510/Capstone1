@@ -10,14 +10,16 @@ public class User implements Parcelable {
     private String userName;
     private String passWord;
     private String address;
+    private String userPhone;
 
-    public User(int cusID, String fullName, String email, String userName, String passWord, String address) {
+    public User(int cusID, String fullName, String email, String userName, String passWord, String address,String userPhone) {
         this.cusID = cusID;
         this.fullName = fullName;
         this.email = email;
         this.userName = userName;
         this.passWord = passWord;
         this.address = address;
+        this.userPhone = userPhone;
     }
 
     protected User(Parcel in) {
@@ -27,7 +29,16 @@ public class User implements Parcelable {
         this.userName = in.readString();
         this.passWord = in.readString();
         this.address = in.readString();
+        this.userPhone = in.readString();
     }
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -88,6 +99,7 @@ public class User implements Parcelable {
         dest.writeString(userName);
         dest.writeString(passWord);
         dest.writeString(address);
+        dest.writeString(userPhone);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

@@ -114,7 +114,7 @@ public class Fragment_Home extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-    //Read Json
+    //Đọc dữ liệu từ database thông qua webservice
     private void ReadJSON(final String urlData){
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         String [ ] arrString = urlData.split("/");

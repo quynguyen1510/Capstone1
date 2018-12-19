@@ -12,6 +12,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
+
         android:scaleType="fitXY"
         android:src="@drawable/cafe"
         android:layout_marginTop="10dp"

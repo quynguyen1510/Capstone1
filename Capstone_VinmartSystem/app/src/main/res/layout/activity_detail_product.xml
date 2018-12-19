@@ -43,7 +43,9 @@
                         android:layout_marginTop="10dp"
                         android:gravity="left"
                         android:text="Mô tả"
-                        android:textSize="20sp" />
+                        android:textStyle="bold"
+                        android:textColor="#090909"
+                        android:textSize="15sp" />
                     <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
                         android:id="@+id/btnElegent"
                         android:layout_width="wrap_content"

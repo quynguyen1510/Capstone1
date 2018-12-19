@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,12 +24,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
 import static java.lang.String.*;
 
 public class CartRecycleAdapter extends BaseAdapter {
@@ -37,6 +41,9 @@ public class CartRecycleAdapter extends BaseAdapter {
     private int layout;
     int newQuantity;
     TextView totalView;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference reference = database.getReference("vinmart-delivery-224708");
+    SharedPreferences sharedPreferences;
 
     public CartRecycleAdapter(List<Cart> arrayList, Context context, int layout,TextView totalView) {
         this.arrayList = arrayList;
@@ -100,6 +107,7 @@ public class CartRecycleAdapter extends BaseAdapter {
         holder.txtCartName.setText(cart.getProductName());
         holder.txtCartPrice.setText(String.valueOf(cart.getPrice()));
         holder.quantity.setText(String.valueOf(cart.getQuantity()));
+        sharedPreferences = context.getSharedPreferences("login",MODE_PRIVATE);
         holder.imgMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +115,12 @@ public class CartRecycleAdapter extends BaseAdapter {
                 if(newQuantity == 1){
                     Toast.makeText(context, "Số lượng không được nhỏ hơn 1", Toast.LENGTH_SHORT).show();
                 }else {
+                    //Lấy số lượng mới và update lên firebase
                     newQuantity = Integer.parseInt(holder.quantity.getText().toString().trim()) - 1;
+                    Map<String, Object> setQuantity = new HashMap<String, Object>();
+                    setQuantity.put("quantity", String.valueOf(newQuantity));
+                    reference.child("Cart"+sharedPreferences.getInt("cus_id",0)).child(arrayList.get(position).getProductName()).updateChildren(setQuantity);
+                    //------------------
                     arrayList.get(position).setQuantity(newQuantity);
                     holder.quantity.setText(String.valueOf(newQuantity));
                     totalView.setText(String.valueOf(TongTien()));
@@ -117,7 +130,13 @@ public class CartRecycleAdapter extends BaseAdapter {
         holder.imgPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Lấy dữ liệu mới và add lên firebase
                 newQuantity = Integer.parseInt(holder.quantity.getText().toString().trim()) + 1;
+                Map<String, Object> setQuantity = new HashMap<String, Object>();
+                setQuantity.put("quantity", String.valueOf(newQuantity));
+                reference.child("Cart"+sharedPreferences.getInt("cus_id",0)).child(arrayList.get(position).getProductName()).updateChildren(setQuantity);
+                //---------
+
                 arrayList.get(position).setQuantity(newQuantity);
                 holder.quantity.setText(String.valueOf(newQuantity));
                 totalView.setText(String.valueOf(TongTien()));

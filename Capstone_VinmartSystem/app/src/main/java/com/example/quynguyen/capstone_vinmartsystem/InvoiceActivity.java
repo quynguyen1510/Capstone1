@@ -172,9 +172,11 @@ public class InvoiceActivity extends AppCompatActivity {
                                         jsonObject.getString("gmail"),
                                         jsonObject.getString("user"),
                                         jsonObject.getString("pass"),
-                                        jsonObject.getString("address")
+                                        jsonObject.getString("address"),
+                                        jsonObject.getString("phone")
                                 );
                                 edtCusAddress.setText(objUser.getAddress());
+                                edtCusPhone.setText(objUser.getUserPhone());
                             }else{
 
                             }

@@ -88,7 +88,7 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if(jsonObject.getInt("success") == 1){
-                                int orderID = jsonObject.getInt("invoice_id")+1;
+                                int orderID = jsonObject.getInt("invoice_id");
                                 txtID.setText(String.valueOf(orderID));
                             }else{
                                 Toast.makeText(InvoiceConfirmActivity.this, "Lỗi", Toast.LENGTH_SHORT).show();
@@ -205,7 +205,8 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
                                         jsonObject.getString("gmail"),
                                         jsonObject.getString("user"),
                                         jsonObject.getString("pass"),
-                                        jsonObject.getString("address")
+                                        jsonObject.getString("address"),
+                                        jsonObject.getString("phone")
                                 );
                                 Intent intent = new Intent(InvoiceConfirmActivity.this,MainActivity.class);
                                 intent.putExtra("user", objUser);

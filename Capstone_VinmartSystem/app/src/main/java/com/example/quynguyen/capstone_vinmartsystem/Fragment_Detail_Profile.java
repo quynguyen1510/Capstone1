@@ -30,7 +30,7 @@ import java.util.Map;
 public class Fragment_Detail_Profile extends Fragment {
 
     Button btnLogout,btnUpdate;
-    TextView txtEmail, txtAddress, txtUserName;
+    TextView txtEmail, txtAddress, txtUserName, txtPhoneNumber;
     User user;
     String urlData = new Connect().urlData + "/getuser.php";
     SharedPreferences sharedPreferences;
@@ -46,6 +46,7 @@ public class Fragment_Detail_Profile extends Fragment {
         txtUserName = (TextView) view.findViewById(R.id.txtUserName);
         txtEmail = (TextView) view.findViewById(R.id.txtEmail);
         txtAddress = (TextView) view.findViewById(R.id.txtAddress);
+        txtPhoneNumber = view.findViewById(R.id.txtPhoneNumber);
         btnLogout = (Button) view.findViewById(R.id.btnLogout);
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
@@ -82,7 +83,9 @@ public class Fragment_Detail_Profile extends Fragment {
                         txtEmail.getText().toString(),
                         sharedPreferences.getString(USERNAME_KEY,""),
                         sharedPreferences.getString(PASS_KEY,""),
-                        txtAddress.getText().toString());
+                        txtAddress.getText().toString(),
+                        txtPhoneNumber.getText().toString()
+                );
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("UpdateAcc",user);
                 Intent intent = new Intent(getActivity(),UpdateUserActivity.class);
@@ -110,11 +113,13 @@ public class Fragment_Detail_Profile extends Fragment {
                                         jsonObject.getString("gmail"),
                                         jsonObject.getString("user"),
                                         jsonObject.getString("pass"),
-                                        jsonObject.getString("address")
+                                        jsonObject.getString("address"),
+                                        jsonObject.getString("phone")
                                 );
                                 txtUserName.setText(objUser.getFullName());
                                 txtEmail.setText(objUser.getEmail());
                                 txtAddress.setText(objUser.getAddress());
+                                txtPhoneNumber.setText(objUser.getUserPhone());
                                 sharedPreferences = getActivity().getSharedPreferences("login",getContext().MODE_PRIVATE);
                                 editor = sharedPreferences.edit();
                                 editor.putString(USERNAME_KEY,objUser.getUserName());
