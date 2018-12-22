@@ -115,7 +115,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         maps = googleMap;
         LatLng cusAddress = new LatLng(cusPosition.latitude, cusPosition.longitude);
-
         maps.moveCamera(CameraUpdateFactory.newLatLngZoom(cusAddress, 15));
         if (bundle != null) {
             maps.addMarker(new MarkerOptions().title(objDelivery.getCusAddress()).snippet("Địa chỉ khách hàng").position(cusAddress));
@@ -130,7 +129,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     //Lấy vị trí từ address khách hàng
     public LatLng getLocationFromAddress(Context context, String strAddress) {
-
         Geocoder coder = new Geocoder(this);
         List<Address> address;
         LatLng p1 = null;
@@ -141,10 +139,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             if (address == null) {
                 return null;
             }
-
             Address location = address.get(0);
             p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
         } catch (IOException ex) {
 
             ex.printStackTrace();
