@@ -110,40 +110,6 @@ public class Fragment_Cart extends Fragment{
 
                 }
             });
-//            reference.child("Cart"+cusID).addChildEventListener(new ChildEventListener() {
-//                @Override
-//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                    Cart objCart = dataSnapshot.getValue(Cart.class);
-//                    Toast.makeText(getContext(),objCart.getProductName() , Toast.LENGTH_SHORT).show();
-//                    arrCart.add(objCart);
-//                    for(int i = 0 ; i< arrCart.size() ; i++){
-//                        total += arrCart.get(i).getQuantity()*arrCart.get(i).getPrice();
-//                    }
-//                    totalPrice.setText(String.valueOf(total));
-//                    cartAdapter.notifyDataSetChanged();
-//                }
-//
-//                @Override
-//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                    Cart objCart = dataSnapshot.getValue(Cart.class);
-//                    cartAdapter.notifyDataSetChanged();
-//                }
-//
-//                @Override
-//                public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//                }
-//
-//                @Override
-//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
         }
 
         //Xóa sản phẩm trong cart
@@ -200,6 +166,12 @@ public class Fragment_Cart extends Fragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 reference.child("Cart"+sharedPreferences.getInt("cus_id",0)).child(name).removeValue();
+                arrCart.remove(objCart);
+                total = 0;
+                for(int i = 0 ; i < arrCart.size() ; i++){
+                    total += arrCart.get(i).getQuantity()*arrCart.get(i).getPrice();
+                }
+                totalPrice.setText(String.valueOf(total));
                 cartAdapter = new CartRecycleAdapter(arrCart,getContext(),R.layout.cart_item_row,totalPrice);
                 gridViewCart.setAdapter(cartAdapter);
             }
