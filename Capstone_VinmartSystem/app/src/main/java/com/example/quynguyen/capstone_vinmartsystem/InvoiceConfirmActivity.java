@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +42,9 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
     String urlGetInvoiceID = new Connect().urlData + "/getidinvoice.php";
     String urlDelete = new Connect().urlData + "/deletecartbyuser.php";
     String urlGetUser = new Connect().urlData + "/getuser.php";
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference reference = database.getReference("vinmart-delivery-224708");
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -146,34 +151,8 @@ public class InvoiceConfirmActivity extends AppCompatActivity {
 
     //Xóa cart sau khi đã thanh toán
     public void deleteCart(){
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlDelete,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response.trim().equals("complete")){
-
-                        }else{
-                            Toast.makeText(InvoiceConfirmActivity.this, "Chưa xóa thành công!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(InvoiceConfirmActivity.this, "Lỗi server", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
-                params.put("iduser",String.valueOf(sharedPreferences.getInt("cus_id",0)));
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
+        sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+        reference.child("Cart"+sharedPreferences.getInt("cus_id",0)).removeValue();
     }
 
     //Tin nhắn thông báo mua hàng thành công và chờ shipper
